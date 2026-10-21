@@ -315,14 +315,8 @@
       <!-- Top Bar: Logo & Utility Controls -->
       <div class="relative z-10 flex items-center justify-between mb-8">
         <!-- Logo Container -->
-        <div class="w-14 h-14 rounded-full bg-white shadow-soft flex items-center justify-center p-2.5 transition-transform active:scale-95 cursor-pointer">
-          <!-- Stylized Book & Cap / Learning emblem in Navy & Teal -->
-          <svg viewBox="0 0 48 48" fill="none" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-            <rect width="48" height="48" rx="24" fill="white"/>
-            <path d="M24 12L10 19L24 26L38 19L24 12Z" fill="#3767D8"/>
-            <path d="M14 23.5V30.5C14 34.5 18.5 37.5 24 37.5C29.5 37.5 34 34.5 34 30.5V23.5L24 28.5L14 23.5Z" fill="#64C5CC"/>
-            <circle cx="24" cy="20" r="3" fill="#F6A04A"/>
-          </svg>
+        <div id="headerLogoContainer" class="w-14 h-14 rounded-full bg-white shadow-soft flex items-center justify-center transition-transform active:scale-95 cursor-pointer overflow-hidden p-2" title="TIT Advance Home">
+          <img src="https://indiacybercafe.com/wp-content/uploads/2026/10/TIT-Advance-App-icon.png" alt="TIT Advance App Icon" class="w-10 h-10 object-contain rounded-md shrink-0" style="aspect-ratio: 1/1;" loading="eager">
         </div>
 
         <!-- 3 Rounded-Square Utility Buttons -->
@@ -513,47 +507,6 @@
       </div>
     </main>
 
-    <!-- Floating Bottom Navigation -->
-    <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-40px)] max-w-[390px] md:w-[560px] md:max-w-[calc(100%-3rem)] z-50">
-      <div class="bg-white/95 backdrop-blur-md rounded-pill shadow-floating p-1.5 flex items-center border border-app-border/70 safe-bottom">
-        
-        <!-- Tab 1: Home (Selected: Pale peach/orange capsule #FFE2C4 + orange text/icon #F6A04A) -->
-        <button type="button" class="flex-1 py-2.5 px-2.5 mr-2.5 rounded-full bg-app-orangeLight flex flex-col items-center justify-center text-app-orange transition-all duration-200" style="margin-right: 10px;">
-          <svg class="w-5 h-5 mb-0.5" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
-          </svg>
-          <span class="text-xs font-semibold tracking-wide">Home</span>
-        </button>
-
-        <!-- Vertical Separator -->
-        <div class="w-[1px] h-7 bg-app-border shrink-0"></div>
-
-        <!-- Tab 2: Community (Muted slate #626B7D) -->
-        <button type="button" class="flex-1 py-2.5 px-3 rounded-full flex flex-col items-center justify-center text-app-secondary hover:text-app-primary transition-all duration-200">
-          <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-            <circle cx="9" cy="7" r="4"></circle>
-            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-          </svg>
-          <span class="text-xs font-medium tracking-wide">Community</span>
-        </button>
-
-        <!-- Vertical Separator -->
-        <div class="w-[1px] h-7 bg-app-border"></div>
-
-        <!-- Tab 3: Settings (Muted slate #626B7D) -->
-        <button type="button" class="flex-1 py-2.5 px-3 rounded-full flex flex-col items-center justify-center text-app-secondary hover:text-app-primary transition-all duration-200">
-          <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="3"></circle>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-          </svg>
-          <span class="text-xs font-medium tracking-wide">Settings</span>
-        </button>
-
-      </div>
-    </nav>
-
   </div>
 
   <section id="courseScreen" class="screen course-screen" aria-labelledby="courseTitle" hidden>
@@ -565,8 +518,7 @@
       </button>
       <h1 class="course-title" id="courseTitle">BT Courses</h1>
     </header>
-
-    <main class="course-content">
+    <main class="course-content pb-32">
       <form class="course-search" id="courseSearchForm" role="search">
         <svg class="course-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="11" cy="11" r="7"></circle>
@@ -579,7 +531,6 @@
           </svg>
         </button>
       </form>
-
       <section class="course-grid" id="courseGrid" aria-label="BT courses">
         <button class="course-card" type="button" data-course-code="BT-101" aria-pressed="false">
           <span class="course-art" aria-hidden="true">
@@ -654,37 +605,300 @@
     </main>
   </section>
 
+  <!-- Community Screen -->
+  <section id="communityScreen" class="screen course-screen" aria-labelledby="communityTitle" hidden>
+    <header class="course-header">
+      <button class="course-back" id="communityBack" type="button" aria-label="Go back to home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M15 18 9 12l6-6"></path>
+        </svg>
+      </button>
+      <h1 class="course-title" id="communityTitle">Community</h1>
+    </header>
+
+    <main class="course-content pt-7 max-w-[680px] pb-36">
+      <div class="flex flex-col gap-3.5 sm:gap-4">
+        
+        <!-- Button 1: WhatsApp Channel -->
+        <a href="https://chat.whatsapp.com/CYpvRu9fBC1GOwA3HzCjLq?s=cl&p=a&mlu=4&ilr=4" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-4 sm:p-5 rounded-[26px] bg-[#FEFBF6] hover:bg-white border border-[#E8E1ED] shadow-card transition-all duration-200 active:scale-[0.98] group cursor-pointer">
+          <div class="flex items-center gap-3.5 sm:gap-4 min-w-0">
+            <!-- Icon Container (Purple) -->
+            <div class="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-[#EFE9FA] flex items-center justify-center text-[#7E57C2] shrink-0 border border-[#E3D9F6]">
+              <svg class="w-6 h-6 sm:w-7 sm:h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              </svg>
+            </div>
+            <div class="min-w-0">
+              <h2 class="text-base sm:text-[17px] font-semibold text-app-primary tracking-tight leading-snug">WhatsApp Channel</h2>
+              <p class="text-xs sm:text-[13px] text-app-secondary mt-0.5 leading-normal">Get updates and learning announcements.</p>
+            </div>
+          </div>
+          <!-- Right Chevron Arrow -->
+          <div class="w-8 h-8 rounded-full flex items-center justify-center text-app-secondary group-hover:text-app-primary group-hover:translate-x-0.5 transition-all shrink-0">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </div>
+        </a>
+
+        <!-- Button 2: Website -->
+        <a href="https://titadvance.dukans.in/" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-4 sm:p-5 rounded-[26px] bg-[#FEFBF6] hover:bg-white border border-[#E8E1ED] shadow-card transition-all duration-200 active:scale-[0.98] group cursor-pointer">
+          <div class="flex items-center gap-3.5 sm:gap-4 min-w-0">
+            <!-- Icon Container (Teal) -->
+            <div class="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-[#E3F5F4] flex items-center justify-center text-[#1E948C] shrink-0 border border-[#CEEDE8]">
+              <svg class="w-6 h-6 sm:w-7 sm:h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+            </div>
+            <div class="min-w-0">
+              <h2 class="text-base sm:text-[17px] font-semibold text-app-primary tracking-tight leading-snug">Website</h2>
+              <p class="text-xs sm:text-[13px] text-app-secondary mt-0.5 leading-normal">Open TIT Advance learning resources.</p>
+            </div>
+          </div>
+          <!-- Right Chevron Arrow -->
+          <div class="w-8 h-8 rounded-full flex items-center justify-center text-app-secondary group-hover:text-app-primary group-hover:translate-x-0.5 transition-all shrink-0">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </div>
+        </a>
+
+        <!-- Button 3: Share App -->
+        <a href="https://titadvance.dukans.in/assets/TIT_Advance_App.apk" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-4 sm:p-5 rounded-[26px] bg-[#FEFBF6] hover:bg-white border border-[#E8E1ED] shadow-card transition-all duration-200 active:scale-[0.98] group cursor-pointer">
+          <div class="flex items-center gap-3.5 sm:gap-4 min-w-0">
+            <!-- Icon Container (Warm Orange) -->
+            <div class="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-[#FDEEE2] flex items-center justify-center text-[#F6A04A] shrink-0 border border-[#FADCC4]">
+              <svg class="w-6 h-6 sm:w-7 sm:h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="18" cy="5" r="3"></circle>
+                <circle cx="6" cy="12" r="3"></circle>
+                <circle cx="18" cy="19" r="3"></circle>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+              </svg>
+            </div>
+            <div class="min-w-0">
+              <h2 class="text-base sm:text-[17px] font-semibold text-app-primary tracking-tight leading-snug">Share App</h2>
+              <p class="text-xs sm:text-[13px] text-app-secondary mt-0.5 leading-normal">Send app links to friends or family.</p>
+            </div>
+          </div>
+          <!-- Right Chevron Arrow -->
+          <div class="w-8 h-8 rounded-full flex items-center justify-center text-app-secondary group-hover:text-app-primary group-hover:translate-x-0.5 transition-all shrink-0">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </div>
+        </a>
+
+        <!-- Button 4: Rate App -->
+        <a href="https://play.google.com/store/apps/details?id=com.titgroups.advance" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-4 sm:p-5 rounded-[26px] bg-[#FEFBF6] hover:bg-white border border-[#E8E1ED] shadow-card transition-all duration-200 active:scale-[0.98] group cursor-pointer">
+          <div class="flex items-center gap-3.5 sm:gap-4 min-w-0">
+            <!-- Icon Container (Sky Blue) -->
+            <div class="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-[#E2F1F8] flex items-center justify-center text-[#2B88D8] shrink-0 border border-[#CFE7F4]">
+              <svg class="w-6 h-6 sm:w-7 sm:h-7" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+            </div>
+            <div class="min-w-0">
+              <h2 class="text-base sm:text-[17px] font-semibold text-app-primary tracking-tight leading-snug">Rate App</h2>
+              <p class="text-xs sm:text-[13px] text-app-secondary mt-0.5 leading-normal">Open the store rating page.</p>
+            </div>
+          </div>
+          <!-- Right Chevron Arrow -->
+          <div class="w-8 h-8 rounded-full flex items-center justify-center text-app-secondary group-hover:text-app-primary group-hover:translate-x-0.5 transition-all shrink-0">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </div>
+        </a>
+
+      </div>
+    </main>
+  </section>
+
+  <!-- Settings Screen -->
+  <section id="settingsScreen" class="screen course-screen" aria-labelledby="settingsTitle" hidden>
+    <header class="course-header">
+      <button class="course-back" id="settingsBack" type="button" aria-label="Go back to home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M15 18 9 12l6-6"></path>
+        </svg>
+      </button>
+      <h1 class="course-title" id="settingsTitle">Settings</h1>
+    </header>
+
+    <main class="course-content pt-7 max-w-[680px] pb-36">
+      <div class="flex flex-col gap-4">
+        <!-- App Info Panel -->
+        <div class="p-5 rounded-[26px] bg-[#FEFBF6] border border-[#E8E1ED] shadow-card">
+          <h2 class="text-base font-semibold text-app-primary mb-2">About TIT Advance App</h2>
+          <p class="text-xs sm:text-sm text-app-secondary leading-relaxed">
+            Technocrats Institute of Technology Advance, Bhopal (Technocrats Group). Approved by AICTE, affiliated to RGPV Bhopal.
+          </p>
+          <div class="mt-3 pt-3 border-t border-app-border text-xs text-app-muted flex flex-col gap-1">
+            <span>Version: 2.4.0 (WebView Edition)</span>
+            <span>Host: https://titadvance.dukans.in/</span>
+          </div>
+        </div>
+
+        <!-- App Preferences -->
+        <div class="p-5 rounded-[26px] bg-[#FEFBF6] border border-[#E8E1ED] shadow-card">
+          <h2 class="text-base font-semibold text-app-primary mb-3">Preferences</h2>
+          <div class="flex items-center justify-between py-2 border-b border-app-border">
+            <div>
+              <p class="text-sm font-medium text-app-primary">Offline High-Speed Cache</p>
+              <p class="text-xs text-app-secondary">Stored locally for instant access</p>
+            </div>
+            <span class="text-xs font-semibold text-[#5EAD69] bg-[#EAF7ED] px-2.5 py-1 rounded-full">ACTIVE</span>
+          </div>
+          <div class="flex items-center justify-between pt-3">
+            <div>
+              <p class="text-sm font-medium text-app-primary">Reset Stored Data</p>
+              <p class="text-xs text-app-secondary">Clear cached preferences</p>
+            </div>
+            <button type="button" id="clearDataBtn" class="text-xs font-semibold text-[#D92F32] border border-[#D92F32]/40 px-3 py-1.5 rounded-xl hover:bg-[#D92F32]/10 transition-colors">Clear</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </section>
+
+  <!-- Floating Bottom Navigation (Persistent across screens) -->
+  <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-40px)] max-w-[390px] md:w-[560px] md:max-w-[calc(100%-3rem)] z-50">
+    <div class="bg-white/95 backdrop-blur-md rounded-pill shadow-floating p-2 flex items-center justify-between border border-app-border/70 safe-bottom">
+      
+      <!-- Tab 1: Home (Default Selected) -->
+      <div class="flex-1 flex items-center justify-center px-1">
+        <button type="button" id="navHome" class="w-full max-w-[102px] py-2 px-2 rounded-full flex flex-col items-center justify-center text-app-orange bg-app-orangeLight transition-all duration-200 active:scale-95" aria-label="Home screen">
+          <svg class="w-5 h-5 mb-0.5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+          </svg>
+          <span class="text-xs font-semibold tracking-wide">Home</span>
+        </button>
+      </div>
+
+      <!-- Vertical Separator 1 -->
+      <div id="navSep1" class="w-[1px] h-7 bg-app-border shrink-0"></div>
+
+      <!-- Tab 2: Community -->
+      <div class="flex-1 flex items-center justify-center px-1">
+        <button type="button" id="navCommunity" class="w-full max-w-[102px] py-2 px-2 rounded-full flex flex-col items-center justify-center text-app-secondary hover:text-app-primary hover:bg-app-orangeLight/35 transition-all duration-200 active:scale-95" aria-label="Community screen">
+          <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+          <span class="text-xs font-medium tracking-wide">Community</span>
+        </button>
+      </div>
+
+      <!-- Vertical Separator 2 -->
+      <div id="navSep2" class="w-[1px] h-7 bg-app-border shrink-0"></div>
+
+      <!-- Tab 3: Settings -->
+      <div class="flex-1 flex items-center justify-center px-1">
+        <button type="button" id="navSettings" class="w-full max-w-[102px] py-2 px-2 rounded-full flex flex-col items-center justify-center text-app-secondary hover:text-app-primary hover:bg-app-orangeLight/35 transition-all duration-200 active:scale-95" aria-label="Settings screen">
+          <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+          <span class="text-xs font-medium tracking-wide">Settings</span>
+        </button>
+      </div>
+
+    </div>
+  </nav>
+
   <script>
     const homeScreen = document.getElementById('homeScreen');
     const courseScreen = document.getElementById('courseScreen');
+    const communityScreen = document.getElementById('communityScreen');
+    const settingsScreen = document.getElementById('settingsScreen');
     const startLearningCard = document.getElementById('startLearningCard');
     const searchInput = document.getElementById('courseSearch');
     const clearSearchButton = document.getElementById('clearSearch');
     const courseCards = Array.from(document.querySelectorAll('.course-card'));
     const emptyState = document.getElementById('emptyState');
 
-    function showScreen(showCourses) {
-      homeScreen.hidden = showCourses;
-      courseScreen.hidden = !showCourses;
-      document.title = showCourses ? 'BT Courses' : 'Student Learning Portal - Home';
+    const navHome = document.getElementById('navHome');
+    const navCommunity = document.getElementById('navCommunity');
+    const navSettings = document.getElementById('navSettings');
+
+    const activeNavClass = 'w-full max-w-[102px] py-2 px-2 rounded-full flex flex-col items-center justify-center text-app-orange bg-app-orangeLight transition-all duration-200 active:scale-95';
+    const inactiveNavClass = 'w-full max-w-[102px] py-2 px-2 rounded-full flex flex-col items-center justify-center text-app-secondary hover:text-app-primary hover:bg-app-orangeLight/35 transition-all duration-200 active:scale-95';
+
+    function setTabState(button, isActive) {
+      if (!button) return;
+      button.className = isActive ? activeNavClass : inactiveNavClass;
+      button.style.marginLeft = '';
+      button.style.marginRight = '';
+      const span = button.querySelector('span');
+      if (span) {
+        span.className = isActive ? 'text-xs font-semibold tracking-wide' : 'text-xs font-medium tracking-wide';
+      }
+    }
+
+    function updateNavHighlight(activeTab) {
+      setTabState(navHome, activeTab === 'home');
+      setTabState(navCommunity, activeTab === 'community');
+      setTabState(navSettings, activeTab === 'settings');
+    }
+
+    function switchView(viewName, pushState = true) {
+      homeScreen.hidden = (viewName !== 'home');
+      courseScreen.hidden = (viewName !== 'courses');
+      if (communityScreen) communityScreen.hidden = (viewName !== 'community');
+      if (settingsScreen) settingsScreen.hidden = (viewName !== 'settings');
+
+      if (viewName === 'home') {
+        document.title = 'Student Learning Portal - Home';
+        updateNavHighlight('home');
+      } else if (viewName === 'courses') {
+        document.title = 'BT Courses';
+        updateNavHighlight('home');
+      } else if (viewName === 'community') {
+        document.title = 'Community | TIT Advance';
+        updateNavHighlight('community');
+      } else if (viewName === 'settings') {
+        document.title = 'Settings | TIT Advance';
+        updateNavHighlight('settings');
+      }
+
       window.scrollTo(0, 0);
+
+      if (pushState) {
+        const hash = (viewName === 'home') ? '' : '#' + viewName;
+        if (window.location.hash !== hash) {
+          window.history.pushState({ screen: viewName }, '', hash || window.location.pathname);
+        }
+      }
     }
 
     function openCourses() {
-      if (window.location.hash !== '#courses') window.history.pushState({ screen: 'courses' }, '', '#courses');
-      showScreen(true);
+      switchView('courses');
     }
 
     function returnHome() {
-      if (window.location.hash === '#courses') {
+      if (window.location.hash) {
         window.history.back();
       } else {
-        showScreen(false);
+        switchView('home');
       }
     }
 
     function syncScreenWithLocation() {
-      showScreen(window.location.hash === '#courses');
+      const hash = window.location.hash;
+      if (hash === '#courses') {
+        switchView('courses', false);
+      } else if (hash === '#community') {
+        switchView('community', false);
+      } else if (hash === '#settings') {
+        switchView('settings', false);
+      } else {
+        switchView('home', false);
+      }
     }
 
     function filterCourses() {
@@ -699,6 +913,25 @@
       emptyState.hidden = visibleCount !== 0;
     }
 
+    // Navigation Tab Events
+    if (navHome) navHome.addEventListener('click', () => switchView('home'));
+    if (navCommunity) navCommunity.addEventListener('click', () => switchView('community'));
+    if (navSettings) navSettings.addEventListener('click', () => switchView('settings'));
+
+    const headerLogoContainer = document.getElementById('headerLogoContainer');
+    if (headerLogoContainer) headerLogoContainer.addEventListener('click', () => switchView('home'));
+
+    // Back Buttons
+    const courseBackBtn = document.getElementById('courseBack');
+    if (courseBackBtn) courseBackBtn.addEventListener('click', returnHome);
+
+    const communityBackBtn = document.getElementById('communityBack');
+    if (communityBackBtn) communityBackBtn.addEventListener('click', returnHome);
+
+    const settingsBackBtn = document.getElementById('settingsBack');
+    if (settingsBackBtn) settingsBackBtn.addEventListener('click', returnHome);
+
+    // Course Interactions
     startLearningCard.addEventListener('click', openCourses);
     startLearningCard.addEventListener('keydown', (event) => {
       if (event.key === 'Enter' || event.key === ' ') {
@@ -706,24 +939,41 @@
         openCourses();
       }
     });
-    document.getElementById('courseBack').addEventListener('click', returnHome);
+
     window.addEventListener('popstate', syncScreenWithLocation);
     window.addEventListener('hashchange', syncScreenWithLocation);
-    document.getElementById('courseSearchForm').addEventListener('submit', (event) => event.preventDefault());
-    searchInput.addEventListener('input', filterCourses);
-    clearSearchButton.addEventListener('click', () => {
-      searchInput.value = '';
-      filterCourses();
-      searchInput.focus();
-    });
+
+    const courseSearchForm = document.getElementById('courseSearchForm');
+    if (courseSearchForm) {
+      courseSearchForm.addEventListener('submit', (event) => event.preventDefault());
+    }
+
+    if (searchInput) searchInput.addEventListener('input', filterCourses);
+    if (clearSearchButton) {
+      clearSearchButton.addEventListener('click', () => {
+        searchInput.value = '';
+        filterCourses();
+        searchInput.focus();
+      });
+    }
+
     courseCards.forEach((card) => {
       card.addEventListener('click', () => {
         courseCards.forEach((item) => item.setAttribute('aria-pressed', String(item === card)));
         courseScreen.dataset.selectedCourse = card.dataset.courseCode;
       });
     });
-    if (window.location.hash === '#courses') showScreen(true);
-  </script>
 
+    const clearDataBtn = document.getElementById('clearDataBtn');
+    if (clearDataBtn) {
+      clearDataBtn.addEventListener('click', () => {
+        clearDataBtn.textContent = 'Cleared!';
+        setTimeout(() => { clearDataBtn.textContent = 'Clear'; }, 1500);
+      });
+    }
+
+    // Init screen from hash
+    syncScreenWithLocation();
+  </script>
 </body>
 </html>
