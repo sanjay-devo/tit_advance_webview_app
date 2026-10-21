@@ -381,7 +381,7 @@
           <img src="https://indiacybercafe.com/wp-content/uploads/2026/10/TIT-Advance-App-icon.png" alt="TIT Advance App Icon" loading="eager">
         </div>
 
-        <!-- 3 Rounded-Square Utility Buttons -->
+        <!-- Header Utility Buttons -->
         <div class="flex items-center space-x-2.5">
           <!-- Notification / Bell Icon -->
           <button type="button" aria-label="Notifications" class="w-11 h-11 rounded-2xl bg-white/60 hover:bg-white/80 active:scale-90 backdrop-blur-md flex items-center justify-center text-app-primary border border-white/40 shadow-sm transition-all duration-150">
@@ -391,15 +391,8 @@
             </svg>
           </button>
 
-          <!-- Star / Favorites Icon -->
-          <button type="button" aria-label="Favorites" class="w-11 h-11 rounded-2xl bg-white/60 hover:bg-white/80 active:scale-90 backdrop-blur-md flex items-center justify-center text-app-primary border border-white/40 shadow-sm transition-all duration-150">
-            <svg class="w-5 h-5 text-app-primary" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-            </svg>
-          </button>
-
           <!-- Share Icon -->
-          <button type="button" aria-label="Share" class="w-11 h-11 rounded-2xl bg-white/60 hover:bg-white/80 active:scale-90 backdrop-blur-md flex items-center justify-center text-app-primary border border-white/40 shadow-sm transition-all duration-150">
+          <button type="button" id="headerShareButton" aria-label="Share app" class="w-11 h-11 rounded-2xl bg-white/60 hover:bg-white/80 active:scale-90 backdrop-blur-md flex items-center justify-center text-app-primary border border-white/40 shadow-sm transition-all duration-150">
             <svg class="w-5 h-5 text-app-primary" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
               <circle cx="18" cy="5" r="3"></circle>
               <circle cx="6" cy="12" r="3"></circle>
@@ -682,7 +675,7 @@
       <div class="flex flex-col gap-3.5 sm:gap-4">
         
         <!-- Button 1: WhatsApp Channel -->
-        <a href="https://chat.whatsapp.com/CYpvRu9fBC1GOwA3HzCjLq?s=cl&p=a&mlu=4&ilr=4" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-4 sm:p-5 rounded-[26px] bg-[#FEFBF6] hover:bg-white border border-[#E8E1ED] shadow-card transition-all duration-200 active:scale-[0.98] group cursor-pointer">
+        <a href="https://chat.whatsapp.com/CYpvRu9fBC1GOwA3HzCjLq?s=cl&amp;p=a&amp;mlu=4&amp;ilr=4" class="flex items-center justify-between p-4 sm:p-5 rounded-[26px] bg-[#FEFBF6] hover:bg-white border border-[#E8E1ED] shadow-card transition-all duration-200 active:scale-[0.98] group cursor-pointer">
           <div class="flex items-center gap-3.5 sm:gap-4 min-w-0">
             <!-- Icon Container (Purple) -->
             <div class="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-[#EFE9FA] flex items-center justify-center text-[#7E57C2] shrink-0 border border-[#E3D9F6]">
@@ -704,7 +697,7 @@
         </a>
 
         <!-- Button 2: Website -->
-        <a href="https://titadvance.dukans.in/" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-4 sm:p-5 rounded-[26px] bg-[#FEFBF6] hover:bg-white border border-[#E8E1ED] shadow-card transition-all duration-200 active:scale-[0.98] group cursor-pointer">
+        <a href="https://titadvance.dukans.in/" class="flex items-center justify-between p-4 sm:p-5 rounded-[26px] bg-[#FEFBF6] hover:bg-white border border-[#E8E1ED] shadow-card transition-all duration-200 active:scale-[0.98] group cursor-pointer">
           <div class="flex items-center gap-3.5 sm:gap-4 min-w-0">
             <!-- Icon Container (Teal) -->
             <div class="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-[#E3F5F4] flex items-center justify-center text-[#1E948C] shrink-0 border border-[#CEEDE8]">
@@ -728,7 +721,7 @@
         </a>
 
         <!-- Button 3: Share App -->
-        <a href="https://titadvance.dukans.in/assets/TIT_Advance_App.apk" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-4 sm:p-5 rounded-[26px] bg-[#FEFBF6] hover:bg-white border border-[#E8E1ED] shadow-card transition-all duration-200 active:scale-[0.98] group cursor-pointer">
+        <a href="https://play.google.com/store/apps/details?id=com.titgroups.advance" id="shareAppLink" class="flex items-center justify-between p-4 sm:p-5 rounded-[26px] bg-[#FEFBF6] hover:bg-white border border-[#E8E1ED] shadow-card transition-all duration-200 active:scale-[0.98] group cursor-pointer">
           <div class="flex items-center gap-3.5 sm:gap-4 min-w-0">
             <!-- Icon Container (Warm Orange) -->
             <div class="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-[#FDEEE2] flex items-center justify-center text-[#F6A04A] shrink-0 border border-[#FADCC4]">
@@ -754,7 +747,7 @@
         </a>
 
         <!-- Button 4: Rate App -->
-        <a href="https://play.google.com/store/apps/details?id=com.titgroups.advance" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-4 sm:p-5 rounded-[26px] bg-[#FEFBF6] hover:bg-white border border-[#E8E1ED] shadow-card transition-all duration-200 active:scale-[0.98] group cursor-pointer">
+        <a href="https://play.google.com/store/apps/details?id=com.titgroups.advance" class="flex items-center justify-between p-4 sm:p-5 rounded-[26px] bg-[#FEFBF6] hover:bg-white border border-[#E8E1ED] shadow-card transition-all duration-200 active:scale-[0.98] group cursor-pointer">
           <div class="flex items-center gap-3.5 sm:gap-4 min-w-0">
             <!-- Icon Container (Sky Blue) -->
             <div class="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-[#E2F1F8] flex items-center justify-center text-[#2B88D8] shrink-0 border border-[#CFE7F4]">
@@ -978,6 +971,66 @@
     if (navHome) navHome.addEventListener('click', () => switchView('home'));
     if (navCommunity) navCommunity.addEventListener('click', () => switchView('community'));
     if (navSettings) navSettings.addEventListener('click', () => switchView('settings'));
+
+    const shareAppLink = document.getElementById('shareAppLink');
+    const headerShareButton = document.getElementById('headerShareButton');
+    const appStoreUrl = 'https://play.google.com/store/apps/details?id=com.titgroups.advance';
+    let shareFeedbackTimer;
+
+    function showShareFeedback(message) {
+      let feedback = document.getElementById('shareFeedback');
+      if (!feedback) {
+        feedback = document.createElement('div');
+        feedback.id = 'shareFeedback';
+        feedback.setAttribute('role', 'status');
+        feedback.setAttribute('aria-live', 'polite');
+        Object.assign(feedback.style, {
+          position: 'fixed',
+          left: '50%',
+          bottom: '24px',
+          transform: 'translateX(-50%)',
+          zIndex: '100',
+          maxWidth: 'calc(100% - 32px)',
+          padding: '10px 16px',
+          borderRadius: '999px',
+          background: '#171B2B',
+          color: '#FFFFFF',
+          fontSize: '14px',
+          textAlign: 'center',
+          boxShadow: '0 8px 24px rgba(36, 48, 68, 0.16)'
+        });
+        document.body.appendChild(feedback);
+      }
+      feedback.textContent = message;
+      feedback.hidden = false;
+      window.clearTimeout(shareFeedbackTimer);
+      shareFeedbackTimer = window.setTimeout(() => {
+        feedback.hidden = true;
+      }, 2200);
+    }
+
+    async function shareApp(event) {
+      event.preventDefault();
+      if (typeof navigator.share !== 'function') {
+        showShareFeedback(`Sharing isn't supported here. App link: ${appStoreUrl}`);
+        return;
+      }
+
+      try {
+        await navigator.share({
+          title: 'TIT Advance App',
+          text: 'Check out the TIT Advance app.',
+          url: appStoreUrl
+        });
+      } catch (error) {
+        if (error && error.name === 'AbortError') return;
+        showShareFeedback('Unable to open the share sheet. Please try again.');
+        console.error('Unable to share the app link.', error);
+      }
+    }
+
+    if (shareAppLink) shareAppLink.addEventListener('click', shareApp);
+    if (headerShareButton) headerShareButton.addEventListener('click', shareApp);
 
     const headerLogoContainer = document.getElementById('headerLogoContainer');
     if (headerLogoContainer) headerLogoContainer.addEventListener('click', () => switchView('home'));
