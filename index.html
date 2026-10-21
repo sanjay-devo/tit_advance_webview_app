@@ -311,6 +311,42 @@
       outline: none;
       outline-offset: 0;
     }
+    @media (max-width: 699px) {
+      #communityScreen main > div > a {
+        gap: 12px;
+        padding: 12px 14px;
+      }
+      #communityScreen main > div > a > div:first-child {
+        min-width: 0;
+        flex: 1 1 auto;
+        gap: 12px;
+      }
+      #communityScreen main > div > a > div:first-child > div:first-child {
+        display: flex;
+        width: 46px;
+        height: 46px;
+        min-width: 46px;
+        min-height: 46px;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border-radius: 16px;
+      }
+      #communityScreen main > div > a > div:first-child > div:first-child svg {
+        display: block;
+        width: 24px;
+        height: 24px;
+        flex: 0 0 24px;
+      }
+      #communityScreen main > div > a > div:last-child {
+        display: flex;
+        width: 32px;
+        height: 32px;
+        flex: 0 0 32px;
+        align-items: center;
+        justify-content: center;
+      }
+    }
     @media (max-width: 380px) {
       .course-content { padding-right: 16px; padding-left: 16px; }
       .course-grid { gap: 12px; }
