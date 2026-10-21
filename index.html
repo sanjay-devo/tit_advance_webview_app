@@ -76,12 +76,235 @@
     .safe-bottom {
       padding-bottom: env(safe-area-inset-bottom, 24px);
     }
+    .screen[hidden] {
+      display: none;
+    }
+    .course-screen {
+      width: 100%;
+      min-height: 100vh;
+      color: #171B2B;
+      background: #F9FAFC;
+      user-select: none;
+    }
+    .course-header {
+      position: relative;
+      display: flex;
+      min-height: 154px;
+      align-items: center;
+      justify-content: center;
+      padding: calc(env(safe-area-inset-top, 0px) + 20px) 20px 40px;
+      overflow: hidden;
+      border-radius: 0 0 48px 48px;
+      background: linear-gradient(110deg, #E9DDF0 0%, #FFF0D8 52%, #F8D8C6 100%);
+      box-shadow: 0 16px 36px rgba(36, 48, 68, 0.06);
+    }
+    .course-header::after {
+      position: absolute;
+      top: -72px;
+      right: -36px;
+      width: 190px;
+      height: 190px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.24);
+      content: "";
+      pointer-events: none;
+    }
+    .course-back {
+      position: absolute;
+      z-index: 1;
+      top: calc(env(safe-area-inset-top, 0px) + 20px);
+      left: clamp(20px, 5vw, 36px);
+      display: grid;
+      width: 48px;
+      height: 48px;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      background: #FFFFFF;
+      color: #171B2B;
+      box-shadow: 0 8px 24px rgba(36, 48, 68, 0.08);
+      cursor: pointer;
+    }
+    .course-back svg {
+      width: 22px;
+      height: 22px;
+    }
+    .course-title {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      padding: 0 56px;
+      color: #171B2B;
+      font-size: clamp(23px, 6vw, 28px);
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      line-height: 1.2;
+      text-align: center;
+    }
+    .course-content {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px 44px;
+    }
+    .course-search {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      width: min(100%, 640px);
+      height: 62px;
+      align-items: center;
+      gap: 12px;
+      margin: -24px auto 28px;
+      padding: 0 10px 0 20px;
+      border: 1px solid rgba(228, 229, 234, 0.85);
+      border-radius: 28px;
+      background: #FFFFFF;
+      box-shadow: 0 10px 28px rgba(36, 48, 68, 0.08);
+    }
+    .course-search-icon {
+      width: 22px;
+      height: 22px;
+      flex: 0 0 auto;
+      color: #3767D8;
+    }
+    .course-search input {
+      width: 100%;
+      min-width: 0;
+      height: 100%;
+      padding: 0;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: #171B2B;
+      font-size: clamp(13px, 3.7vw, 16px);
+    }
+    .course-search input::placeholder {
+      color: #A5A7AA;
+      opacity: 1;
+    }
+    .course-search input::-webkit-search-cancel-button {
+      display: none;
+    }
+    .course-clear {
+      display: grid;
+      width: 40px;
+      height: 40px;
+      flex: 0 0 40px;
+      place-items: center;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      color: #626B7D;
+      cursor: pointer;
+    }
+    .course-clear[hidden],
+    .course-empty[hidden] {
+      display: none;
+    }
+    .course-clear svg {
+      width: 19px;
+      height: 19px;
+    }
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .course-card {
+      display: flex;
+      min-width: 0;
+      min-height: 184px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 20px 12px 18px;
+      border: 1px solid #E8E1ED;
+      border-radius: 30px;
+      background: #FEFBF6;
+      box-shadow: 0 8px 24px rgba(36, 48, 68, 0.04);
+      color: #171B2B;
+      cursor: pointer;
+      text-align: center;
+      transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+    }
+    .course-card[hidden] {
+      display: none;
+    }
+    .course-card:nth-child(2) { border-color: #EDE1D6; }
+    .course-card:nth-child(3) { border-color: #DDEBE9; }
+    .course-card:nth-child(4) { border-color: #DDE7F2; }
+    .course-card:nth-child(5) { border-color: #E8E1ED; }
+    .course-card:active { transform: scale(0.98); }
+    .course-card[aria-pressed="true"] {
+      border-color: #3767D8;
+      box-shadow: 0 8px 24px rgba(55, 103, 216, 0.14);
+    }
+    .course-art {
+      display: grid;
+      width: 88px;
+      height: 88px;
+      flex: 0 0 auto;
+      place-items: center;
+      border: 1px solid rgba(228, 229, 234, 0.7);
+      border-radius: 50%;
+      background: #F2F5FC;
+    }
+    .course-card:nth-child(2) .course-art { background: #FFF4E8; }
+    .course-card:nth-child(3) .course-art { background: #ECF7F6; }
+    .course-card:nth-child(4) .course-art { background: #EDF5FC; }
+    .course-card:nth-child(5) .course-art { background: #F7F1FA; }
+    .course-art svg {
+      display: block;
+      width: 62px;
+      height: 62px;
+      object-fit: contain;
+    }
+    .course-code {
+      margin: 0;
+      color: #171B2B;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      line-height: 1.3;
+    }
+    .course-empty {
+      margin: 28px 0 0;
+      color: #626B7D;
+      font-size: 15px;
+      text-align: center;
+    }
+    #startLearningCard:focus-visible,
+    .course-screen button:focus-visible,
+    .course-screen input:focus-visible {
+      outline: 3px solid rgba(55, 103, 216, 0.45);
+      outline-offset: 3px;
+    }
+    .course-screen .course-search input:focus-visible {
+      outline: none;
+      outline-offset: 0;
+    }
+    @media (max-width: 380px) {
+      .course-content { padding-right: 16px; padding-left: 16px; }
+      .course-grid { gap: 12px; }
+      .course-card { min-height: 172px; padding-right: 8px; padding-left: 8px; }
+      .course-art { width: 80px; height: 80px; }
+    }
+    @media (min-width: 700px) {
+      .course-header { min-height: 176px; }
+      .course-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+      .course-card { min-height: 210px; }
+    }
+    @media (min-width: 1050px) {
+      .course-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    }
   </style>
 </head>
 <body class="bg-app-bg min-h-screen text-app-primary flex justify-center selection:bg-app-orange selection:text-white">
 
   <!-- Responsive Page Container -->
-  <div class="w-full max-w-[430px] md:max-w-none min-h-screen flex flex-col relative pb-32 overflow-x-hidden">
+  <div id="homeScreen" class="screen w-full max-w-[430px] md:max-w-none min-h-screen flex flex-col relative pb-32 overflow-x-hidden">
 
     <!-- Top Hero Section -->
     <header class="hero-gradient relative rounded-b-hero shadow-hero px-6 pt-5 pb-8 md:px-10 md:pt-8 md:pb-12 lg:px-16 xl:px-20 overflow-hidden safe-top">
@@ -156,7 +379,7 @@
       <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         
         <!-- Card 1: Start Learning (card.blue #BDD3FC) -->
-        <div class="relative overflow-hidden rounded-card bg-card-blue p-4 flex flex-col justify-between shadow-card transition-all duration-200 active:scale-[0.98] cursor-pointer min-h-[220px]">
+        <div id="startLearningCard" role="button" tabindex="0" aria-label="Start Learning" class="relative overflow-hidden rounded-card bg-card-blue p-4 flex flex-col justify-between shadow-card transition-all duration-200 active:scale-[0.98] cursor-pointer min-h-[220px]">
           <!-- Decorative circle in lower corner -->
           <div class="absolute -bottom-7 -right-7 w-28 h-28 rounded-full bg-card-blueDeco pointer-events-none"></div>
 
@@ -332,6 +555,176 @@
     </nav>
 
   </div>
+
+  <section id="courseScreen" class="screen course-screen" aria-labelledby="courseTitle" hidden>
+    <header class="course-header">
+      <button class="course-back" id="courseBack" type="button" aria-label="Go back to home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M15 18 9 12l6-6"></path>
+        </svg>
+      </button>
+      <h1 class="course-title" id="courseTitle">BT Courses</h1>
+    </header>
+
+    <main class="course-content">
+      <form class="course-search" id="courseSearchForm" role="search">
+        <svg class="course-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="m20 20-4-4"></path>
+        </svg>
+        <input id="courseSearch" type="search" placeholder="Search Courses (e.g., BT-101)" aria-label="Search courses by course code" autocomplete="off">
+        <button class="course-clear" id="clearSearch" type="button" aria-label="Clear search" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="m18 6-12 12M6 6l12 12"></path>
+          </svg>
+        </button>
+      </form>
+
+      <section class="course-grid" id="courseGrid" aria-label="BT courses">
+        <button class="course-card" type="button" data-course-code="BT-101" aria-pressed="false">
+          <span class="course-art" aria-hidden="true">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M50 18C42 28 38 42 38 58L50 64L62 58C62 42 58 28 50 18Z" fill="#3767D8"/>
+              <path d="M50 18C46 26 43 38 43 54L50 58V18Z" fill="#5F6FE0"/>
+              <circle cx="50" cy="38" r="7" fill="white"/><circle cx="50" cy="38" r="4.5" fill="#64C5CC"/>
+              <path d="M38 52L26 62C25 67 29 70 34 68L38 60V52Z" fill="#F6A04A"/>
+              <path d="M62 52L74 62C75 67 71 70 66 68L62 60V52Z" fill="#F6A04A"/>
+              <path d="M45 64C45 74 50 82 50 82C50 82 55 74 55 64H45Z" fill="#FFD166"/>
+              <path d="M47 64C47 70 50 75 50 75C50 75 53 70 53 64H47Z" fill="#FF5964"/>
+              <circle cx="28" cy="28" r="2.5" fill="#FFF"/><circle cx="72" cy="34" r="2" fill="#FFF"/>
+            </svg>
+          </span>
+          <span class="course-code">BT-101</span>
+        </button>
+        <button class="course-card" type="button" data-course-code="BT-102" aria-pressed="false">
+          <span class="course-art" aria-hidden="true">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M36 28H64V46C64 54 58 60 50 60C42 60 36 54 36 46V28Z" fill="#FFD166"/>
+              <path d="M50 28H64V46C64 54 58 60 50 60V28Z" fill="#F6A04A"/>
+              <path d="M36 34H28C26 34 24 36 24 40C24 45 28 48 36 48V42C31 42 30 40 30 39C30 38 31 38 36 38V34Z" fill="#FFD166"/>
+              <path d="M64 34H72C74 34 76 36 76 40C76 45 72 48 64 48V42C69 42 70 40 70 39C70 38 69 38 64 38V34Z" fill="#F6A04A"/>
+              <path d="M46 60H54V68H46V60Z" fill="#F6A04A"/><path d="M38 68H62V74H38V68Z" fill="#FFD166"/>
+              <circle cx="50" cy="44" r="6" fill="#FFF"/>
+              <path d="M48 44L49.5 45.5L52.5 42" stroke="#5F6FE0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="course-code">BT-102</span>
+        </button>
+        <button class="course-card" type="button" data-course-code="BT-103" aria-pressed="false">
+          <span class="course-art" aria-hidden="true">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="26" y="24" width="48" height="54" rx="6" fill="#3767D8"/>
+              <rect x="30" y="26" width="40" height="50" rx="4" fill="#FFFFFF"/>
+              <line x1="36" y1="36" x2="64" y2="36" stroke="#E4E5EA" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="36" y1="44" x2="58" y2="44" stroke="#E4E5EA" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="36" y1="52" x2="62" y2="52" stroke="#E4E5EA" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M52 22V52L59 46L66 52V22H52Z" fill="#F6A04A"/>
+            </svg>
+          </span>
+          <span class="course-code">BT-103</span>
+        </button>
+        <button class="course-card" type="button" data-course-code="BT-104" aria-pressed="false">
+          <span class="course-art" aria-hidden="true">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="50" cy="50" r="28" fill="#FFFFFF"/><circle cx="50" cy="50" r="24" fill="#3767D8"/>
+              <circle cx="50" cy="50" r="20" fill="#FFFFFF"/>
+              <path d="M50 36V50H60" stroke="#F6A04A" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="50" cy="50" r="3" fill="#3767D8"/>
+              <path d="M26 44C27 34 35 26 46 24" stroke="#64C5CC" stroke-width="3.5" stroke-linecap="round"/>
+              <polygon points="48,20 48,28 54,24" fill="#64C5CC"/>
+            </svg>
+          </span>
+          <span class="course-code">BT-104</span>
+        </button>
+        <button class="course-card" type="button" data-course-code="BT-105" aria-pressed="false">
+          <span class="course-art" aria-hidden="true">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="26" y="24" width="48" height="54" rx="6" fill="#3767D8"/>
+              <rect x="30" y="26" width="40" height="50" rx="4" fill="#FFFFFF"/>
+              <line x1="36" y1="36" x2="64" y2="36" stroke="#E4E5EA" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="36" y1="44" x2="58" y2="44" stroke="#E4E5EA" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="36" y1="52" x2="62" y2="52" stroke="#E4E5EA" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M52 22V52L59 46L66 52V22H52Z" fill="#F6A04A"/>
+            </svg>
+          </span>
+          <span class="course-code">BT-105</span>
+        </button>
+      </section>
+      <p class="course-empty" id="emptyState" role="status" hidden>No courses found.</p>
+    </main>
+  </section>
+
+  <script>
+    const homeScreen = document.getElementById('homeScreen');
+    const courseScreen = document.getElementById('courseScreen');
+    const startLearningCard = document.getElementById('startLearningCard');
+    const searchInput = document.getElementById('courseSearch');
+    const clearSearchButton = document.getElementById('clearSearch');
+    const courseCards = Array.from(document.querySelectorAll('.course-card'));
+    const emptyState = document.getElementById('emptyState');
+
+    function showScreen(showCourses) {
+      homeScreen.hidden = showCourses;
+      courseScreen.hidden = !showCourses;
+      document.title = showCourses ? 'BT Courses' : 'Student Learning Portal - Home';
+      window.scrollTo(0, 0);
+      if (showCourses) searchInput.focus({ preventScroll: true });
+    }
+
+    function openCourses() {
+      if (window.location.hash !== '#courses') window.history.pushState({ screen: 'courses' }, '', '#courses');
+      showScreen(true);
+    }
+
+    function returnHome() {
+      if (window.location.hash === '#courses') {
+        window.history.back();
+      } else {
+        showScreen(false);
+      }
+    }
+
+    function syncScreenWithLocation() {
+      showScreen(window.location.hash === '#courses');
+    }
+
+    function filterCourses() {
+      const query = searchInput.value.trim().toUpperCase();
+      let visibleCount = 0;
+      courseCards.forEach((card) => {
+        const matches = card.dataset.courseCode.includes(query);
+        card.hidden = !matches;
+        if (matches) visibleCount += 1;
+      });
+      clearSearchButton.hidden = query.length === 0;
+      emptyState.hidden = visibleCount !== 0;
+    }
+
+    startLearningCard.addEventListener('click', openCourses);
+    startLearningCard.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openCourses();
+      }
+    });
+    document.getElementById('courseBack').addEventListener('click', returnHome);
+    window.addEventListener('popstate', syncScreenWithLocation);
+    window.addEventListener('hashchange', syncScreenWithLocation);
+    document.getElementById('courseSearchForm').addEventListener('submit', (event) => event.preventDefault());
+    searchInput.addEventListener('input', filterCourses);
+    clearSearchButton.addEventListener('click', () => {
+      searchInput.value = '';
+      filterCourses();
+      searchInput.focus();
+    });
+    courseCards.forEach((card) => {
+      card.addEventListener('click', () => {
+        courseCards.forEach((item) => item.setAttribute('aria-pressed', String(item === card)));
+        courseScreen.dataset.selectedCourse = card.dataset.courseCode;
+      });
+    });
+    if (window.location.hash === '#courses') showScreen(true);
+  </script>
 
 </body>
 </html>
