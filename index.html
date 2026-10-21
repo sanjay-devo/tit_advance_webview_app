@@ -70,6 +70,32 @@
     .hero-gradient {
       background: linear-gradient(145deg, #E9DDF0 0%, #FFF0D8 38%, #F8D8C6 72%, #DDF1E7 100%);
     }
+    #headerLogoContainer {
+      width: 60px;
+      height: 60px;
+      min-width: 60px;
+      min-height: 60px;
+      padding: 0;
+      border-radius: 50%;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    #headerLogoContainer img {
+      display: block;
+      width: 63px;
+      height: 63px;
+      max-width: none;
+      max-height: none;
+      padding: 0;
+      margin: 0;
+      object-fit: contain;
+      object-position: center;
+      flex-shrink: 0;
+    }
     .safe-top {
       padding-top: env(safe-area-inset-top, 16px);
     }
@@ -315,8 +341,8 @@
       <!-- Top Bar: Logo & Utility Controls -->
       <div class="relative z-10 flex items-center justify-between mb-8">
         <!-- Logo Container -->
-        <div id="headerLogoContainer" class="w-14 h-14 rounded-full bg-white shadow-soft flex items-center justify-center transition-transform active:scale-95 cursor-pointer overflow-hidden p-2" title="TIT Advance Home">
-          <img src="https://indiacybercafe.com/wp-content/uploads/2026/10/TIT-Advance-App-icon.png" alt="TIT Advance App Icon" class="w-10 h-10 object-contain rounded-md shrink-0" style="aspect-ratio: 1/1;" loading="eager">
+        <div id="headerLogoContainer" class="shadow-soft cursor-pointer" title="TIT Advance Home">
+          <img src="https://indiacybercafe.com/wp-content/uploads/2026/10/TIT-Advance-App-icon.png" alt="TIT Advance App Icon" loading="eager">
         </div>
 
         <!-- 3 Rounded-Square Utility Buttons -->
