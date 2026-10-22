@@ -17,11 +17,11 @@
     .login{max-width:520px;margin:24px auto}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.full{grid-column:1/-1}.stack{display:grid;gap:14px}.field{display:grid;gap:6px}.field label{font-size:.84rem;font-weight:500}.field input,.field textarea{width:100%;min-height:46px;padding:10px 13px;border:1px solid var(--border);border-radius:14px;background:var(--surface);color:var(--ink);font:inherit;font-size:.92rem}.field textarea{min-height:95px;resize:vertical}.field input:focus,.field textarea:focus{outline:3px solid rgb(55 103 216 / 20%);border-color:var(--blue)}
     button{font:inherit}.btn{min-height:44px;padding:9px 15px;border:1px solid var(--border);border-radius:14px;background:#fff;color:var(--ink);font-size:.88rem;font-weight:500;cursor:pointer}.btn:hover{background:#F4F6FA}.btn:focus-visible,.link-btn:focus-visible{outline:3px solid rgb(55 103 216 / 35%);outline-offset:2px}.primary{border-color:var(--blue);background:var(--blue);color:#fff}.primary:hover{background:#2D58B8}.danger{border-color:rgb(217 47 50 / 45%);color:var(--danger)}.small{min-height:36px;padding:6px 11px;font-size:.8rem}.link-btn{border:0;background:transparent;color:var(--blue);font:inherit;font-size:.86rem;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
     .status{min-height:24px;margin:12px 0 0;color:var(--secondary);font-size:.86rem}.status.error{color:var(--danger)}.status.success{color:#397D45}.status.loading{display:flex;align-items:center}.status.loading::before{width:15px;height:15px;flex:0 0 15px;margin-right:9px;border:2px solid #C9D2E3;border-top-color:var(--blue);border-radius:50%;content:"";animation:spin .7s linear infinite}.loading{display:inline-flex;align-items:center;gap:9px}.spinner{width:16px;height:16px;border:2px solid #C9D2E3;border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
-    .toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}.workspace{display:grid;grid-template-columns:minmax(245px,.8fr) minmax(0,2fr);gap:18px}.list{display:grid;gap:9px;max-height:420px;overflow:auto}.record{padding:12px;border:1px solid var(--border);border-radius:16px;background:var(--warm)}.record.selected{border-color:var(--blue);box-shadow:0 0 0 2px rgb(55 103 216 / 12%)}.record-name{overflow-wrap:anywhere;font-size:.9rem;font-weight:500}.record-key{overflow-wrap:anywhere;color:var(--muted);font-size:.74rem}.record-actions{display:flex;gap:6px}.record-actions button{flex:0 0 auto}
+    .toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}.workspace{display:grid;grid-template-columns:minmax(245px,.8fr) minmax(0,2fr);gap:18px;align-items:start}.list{display:grid;gap:9px;max-height:420px;overflow:auto}.record{padding:12px;border:1px solid var(--border);border-radius:16px;background:var(--warm)}.record.selected{border-color:var(--blue);box-shadow:0 0 0 2px rgb(55 103 216 / 12%)}.record-name{min-width:0;overflow-wrap:anywhere;font-size:.9rem;font-weight:500}.record-key{overflow-wrap:anywhere;color:var(--muted);font-size:.74rem}.record-actions{display:flex;gap:6px}.record-actions button{flex:0 0 auto}.record-toggle{display:flex;min-width:0;flex:1;align-items:center;justify-content:space-between;gap:10px;padding:0;border:0;background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer}.record-toggle:focus-visible,.panel-summary:focus-visible{outline:3px solid rgb(55 103 216 / 35%);outline-offset:3px;border-radius:8px}.record-chevron,.panel-chevron{width:18px;height:18px;flex:0 0 auto;color:var(--secondary);transition:transform 160ms ease}.record-toggle[aria-expanded="true"] .record-chevron,.collapsible-panel[open] .panel-chevron{transform:rotate(180deg)}.record-details{padding-top:8px}.collapsible-panel{min-width:0}.panel-summary{display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;list-style:none}.panel-summary::-webkit-details-marker{display:none}.panel-summary h3{margin:0}.panel-content{padding-top:12px}
     .columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.empty{padding:18px;border:1px dashed var(--border);border-radius:16px;color:var(--secondary);font-size:.88rem;text-align:center}
     [hidden]{display:none!important}.busy{opacity:.65;pointer-events:none}
-    @media(max-width:760px){.workspace,.columns{grid-template-columns:1fr}.list{max-height:260px}.shell{width:min(100% - 24px,1100px);margin:12px auto 36px}.hero{border-radius:26px}}
-    @media(max-width:520px){.grid{grid-template-columns:1fr}.full{grid-column:auto}.hero-row{align-items:flex-start}.panel{border-radius:22px}.record{gap:8px}.record-head{align-items:flex-start}}
+    @media(max-width:760px){.workspace,.columns{grid-template-columns:minmax(0,1fr)}.list{max-height:none}.shell{width:min(100% - 24px,1100px);margin:12px auto 36px}.hero{border-radius:26px}.workspace{gap:14px}}
+    @media(max-width:520px){.grid{grid-template-columns:1fr}.full{grid-column:auto}.hero-row{align-items:flex-start}.panel{padding:16px;border-radius:22px}.record{padding:10px}.record-head{align-items:center}.toolbar{align-items:flex-start}.actions{width:100%;flex-wrap:wrap}.actions .btn{flex:1 1 120px}.field input{min-width:0}.record-actions{gap:4px}.record-actions .btn{padding:6px 8px}}
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
   </style>
 </head>
@@ -40,26 +40,30 @@
         </div>
         <p id="mainStatus" class="status loading" role="status" aria-live="polite" aria-busy="true">Checking administrator session…</p>
         <div class="workspace">
-          <section class="panel" style="padding:18px" aria-labelledby="coursesHeading">
-            <div class="panel-head"><h3 id="coursesHeading">Courses</h3></div>
-            <form id="courseForm" class="stack" style="margin:14px 0">
-              <div class="field"><label for="courseCode">Course code</label><input id="courseCode" maxlength="40" placeholder="BT-101" required></div>
-              <div class="field"><label for="courseTitle">Course title</label><input id="courseTitle" maxlength="100" placeholder="Course name" required></div>
-              <div class="actions"><button id="saveCourse" class="btn primary" type="submit">Add course</button><button id="cancelCourse" class="btn" type="button" hidden>Cancel edit</button></div>
-            </form>
-            <div id="courseList" class="list" aria-live="polite"></div>
-          </section>
-          <div class="stack">
-            <section class="panel" style="padding:18px" aria-labelledby="subcategoriesHeading">
-              <h3 id="subcategoriesHeading">Subcategories</h3>
-              <p id="selectedCourseLabel" class="hint" style="margin:5px 0 12px">Select a course to manage its content.</p>
-              <form id="subcategoryForm" class="stack" style="margin-bottom:14px" hidden>
-                <div class="field"><label for="subcategoryTitle">Subcategory name</label><input id="subcategoryTitle" maxlength="100" placeholder="Syllabus or Unit 1" required></div>
-                <div class="field"><label for="subcategoryUrl">PDF / ICC Embed URL</label><input id="subcategoryUrl" type="url" maxlength="2000" placeholder="https://..." required></div>
-                <div class="actions"><button id="saveSubcategory" class="btn primary" type="submit">Add subcategory</button><button id="cancelSubcategory" class="btn" type="button" hidden>Cancel edit</button></div>
+          <details class="panel collapsible-panel" style="padding:18px" open>
+            <summary class="panel-summary" aria-labelledby="coursesHeading"><h3 id="coursesHeading">Courses</h3><svg class="panel-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></summary>
+            <div class="panel-content">
+              <form id="courseForm" class="stack" style="margin:14px 0">
+                <div class="field"><label for="courseCode">Course code</label><input id="courseCode" maxlength="40" placeholder="BT-101" required></div>
+                <div class="field"><label for="courseTitle">Course title</label><input id="courseTitle" maxlength="100" placeholder="Course name" required></div>
+                <div class="actions"><button id="saveCourse" class="btn primary" type="submit">Add course</button><button id="cancelCourse" class="btn" type="button" hidden>Cancel edit</button></div>
               </form>
-              <div id="subcategoryList" class="list"></div>
-            </section>
+              <div id="courseList" class="list" aria-live="polite"></div>
+            </div>
+          </details>
+          <div class="stack">
+            <details class="panel collapsible-panel" style="padding:18px" open>
+              <summary class="panel-summary" aria-labelledby="subcategoriesHeading"><h3 id="subcategoriesHeading">Subcategories</h3><svg class="panel-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></summary>
+              <div class="panel-content">
+                <p id="selectedCourseLabel" class="hint" style="margin:5px 0 12px">Select a course to manage its content.</p>
+                <form id="subcategoryForm" class="stack" style="margin-bottom:14px" hidden>
+                  <div class="field"><label for="subcategoryTitle">Subcategory name</label><input id="subcategoryTitle" maxlength="100" placeholder="Syllabus or Unit 1" required></div>
+                  <div class="field"><label for="subcategoryUrl">PDF / ICC Embed URL</label><input id="subcategoryUrl" type="url" maxlength="2000" placeholder="https://..." required></div>
+                  <div class="actions"><button id="saveSubcategory" class="btn primary" type="submit">Add subcategory</button><button id="cancelSubcategory" class="btn" type="button" hidden>Cancel edit</button></div>
+                </form>
+                <div id="subcategoryList" class="list"></div>
+              </div>
+            </details>
           </div>
         </div>
       </section>
@@ -227,14 +231,38 @@
         return course.subcategories && typeof course.subcategories === 'object' ? course.subcategories : {};
       }
 
-      function recordElement(name, key, selected, onEdit, onDelete, subtitle) {
+      function recordElement(name, key, selected, onEdit, onSelect, onDelete, subtitle) {
         const article = document.createElement('article');
         article.className = `record${selected ? ' selected' : ''}`;
         const heading = document.createElement('div');
         heading.className = 'item-head record-head';
+        const toggle = document.createElement('button');
+        toggle.type = 'button';
+        toggle.className = 'record-toggle';
+        toggle.setAttribute('aria-expanded', String(selected));
         const title = document.createElement('div');
         title.className = 'record-name';
         title.textContent = name || key;
+        const chevron = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        chevron.setAttribute('viewBox', '0 0 24 24');
+        chevron.setAttribute('fill', 'none');
+        chevron.setAttribute('stroke', 'currentColor');
+        chevron.setAttribute('stroke-width', '2');
+        chevron.setAttribute('aria-hidden', 'true');
+        chevron.classList.add('record-chevron');
+        const chevronPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        chevronPath.setAttribute('d', 'm6 9 6 6 6-6');
+        chevron.append(chevronPath);
+        toggle.append(title, chevron);
+        toggle.addEventListener('click', () => {
+          if (article.classList.contains('selected')) {
+            const expanded = toggle.getAttribute('aria-expanded') === 'true';
+            toggle.setAttribute('aria-expanded', String(!expanded));
+            details.hidden = expanded;
+            return;
+          }
+          onSelect();
+        });
         const actions = document.createElement('div');
         actions.className = 'record-actions';
         const edit = document.createElement('button');
@@ -248,12 +276,16 @@
         remove.textContent = 'Delete';
         remove.addEventListener('click', onDelete);
         actions.append(edit, remove);
-        heading.append(title, actions);
+        heading.append(toggle, actions);
         article.append(heading);
+        const details = document.createElement('div');
+        details.className = 'record-details';
+        details.hidden = !selected;
         const keyLine = document.createElement('div');
         keyLine.className = 'record-key';
         keyLine.textContent = subtitle ? `${key} · ${subtitle}` : key;
-        article.append(keyLine);
+        details.append(keyLine);
+        article.append(details);
         return article;
       }
 
@@ -282,15 +314,14 @@
               document.getElementById('cancelCourse').hidden = false;
               render();
             },
+            () => {
+              selectedCourseKey = key;
+              selectedSubcategoryKey = '';
+              resetSubcategoryForm();
+              render();
+            },
             () => deleteCourse(key),
             course.title || '');
-          element.addEventListener('click', (event) => {
-            if (event.target.closest('button')) return;
-            selectedCourseKey = key;
-            selectedSubcategoryKey = '';
-            resetSubcategoryForm();
-            render();
-          });
           courseList.append(element);
         }
 
@@ -312,14 +343,13 @@
               document.getElementById('cancelSubcategory').hidden = false;
               render();
             },
+            () => {
+              selectedSubcategoryKey = key;
+              resetSubcategoryForm();
+              render();
+            },
             () => deleteSubcategory(key),
             item.url || '');
-          element.addEventListener('click', (event) => {
-            if (event.target.closest('button')) return;
-            selectedSubcategoryKey = key;
-            resetSubcategoryForm();
-            render();
-          });
           subcategoryList.append(element);
         }
       }

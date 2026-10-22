@@ -1010,6 +1010,9 @@
         if (pdfViewerModal.open) pdfViewerModal.close();
         pdfViewerFrame.src = 'about:blank';
       }
+      if (state.root) {
+        window.history.pushState({ ...state, historyGuard: true }, '', window.location.href);
+      }
     }
 
     function filterCourses() {
@@ -1268,11 +1271,7 @@
 
     window.addEventListener('popstate', (event) => restoreAppHistoryState(event.state));
     window.addEventListener('hashchange', () => {
-      if (history.state && history.state.appScreen) {
-        restoreAppHistoryState(history.state);
-      } else {
-        syncScreenWithLocation();
-      }
+      if (!history.state || !history.state.appScreen) syncScreenWithLocation();
     });
 
     const courseSearchForm = document.getElementById('courseSearchForm');
@@ -1351,8 +1350,11 @@
       if (document.visibilityState === 'visible' && window.location.hash === '#courses') loadStudentCourses();
     });
 
-    // Init screen from hash
+    // Keep a same-app history entry behind the root screen so mobile Back stays in the app.
     syncScreenWithLocation();
+    if (history.state && history.state.appScreen && history.state.root) {
+      history.pushState({ ...history.state, historyGuard: true }, '', window.location.href);
+    }
   </script>
 </body>
 </html>
