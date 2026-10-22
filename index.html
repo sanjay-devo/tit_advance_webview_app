@@ -304,22 +304,6 @@
     .course-detail[hidden] {
       display: none;
     }
-    #pdf-viewer-close {
-      position: fixed;
-      z-index: 1;
-      top: max(12px, env(safe-area-inset-top));
-      right: max(12px, env(safe-area-inset-right));
-      display: grid;
-      width: 44px;
-      height: 44px;
-      place-items: center;
-      border: 1px solid rgba(228, 229, 234, 0.8);
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.94);
-      color: #171B2B;
-      box-shadow: 0 8px 24px rgba(36, 48, 68, 0.16);
-      cursor: pointer;
-    }
     #startLearningCard:focus-visible,
     .course-screen button:focus-visible,
     .course-screen input:focus-visible {
@@ -376,9 +360,6 @@
       background: rgba(23, 27, 43, 0.72);
     }
     @media (max-width: 699px) {
-      #pdf-viewer-close {
-        display: none;
-      }
       #communityScreen main > div > a {
         gap: 12px;
         padding: 12px 14px;
@@ -672,11 +653,6 @@
         allow="fullscreen"
       ></iframe>
     </div>
-    <button id="pdf-viewer-close" type="button" aria-label="Close document viewer">
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-        <path d="m18 6-12 12M6 6l12 12"></path>
-      </svg>
-    </button>
   </dialog>
 
   <!-- Community Screen -->
@@ -1329,7 +1305,6 @@
       pdfViewerFrame.src = 'about:blank';
     }
 
-    document.getElementById('pdf-viewer-close').addEventListener('click', closeCourseDocument);
     pdfViewerModal.addEventListener('cancel', (event) => {
       event.preventDefault();
       closeCourseDocument();
