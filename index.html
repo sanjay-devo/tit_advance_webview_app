@@ -116,10 +116,10 @@
     .course-header {
       position: relative;
       display: flex;
-      min-height: 154px;
+      min-height: calc(80px + env(safe-area-inset-top, 0px));
       align-items: center;
       justify-content: center;
-      padding: calc(env(safe-area-inset-top, 0px) + 20px) 20px 40px;
+      padding: env(safe-area-inset-top, 0px) 16px 0;
       overflow: hidden;
       border-radius: 0 0 48px 48px;
       background: linear-gradient(110deg, #E9DDF0 0%, #FFF0D8 52%, #F8D8C6 100%);
@@ -139,7 +139,7 @@
     .course-back {
       position: absolute;
       z-index: 3;
-      top: calc(env(safe-area-inset-top, 0px) + 20px);
+      top: calc(env(safe-area-inset-top, 0px) + 12px);
       left: clamp(20px, 5vw, 36px);
       display: grid;
       width: 48px;
@@ -185,7 +185,7 @@
     .notifications-dismiss-all {
       position: absolute;
       z-index: 3;
-      top: calc(env(safe-area-inset-top, 0px) + 20px);
+      top: calc(env(safe-area-inset-top, 0px) + 12px);
       right: clamp(20px, 5vw, 36px);
       display: grid;
       width: 48px;
@@ -303,14 +303,23 @@
     .course-title {
       position: relative;
       z-index: 1;
+      display: block;
+      width: calc(100% - 2 * (clamp(20px, 5vw, 36px) + 56px));
+      min-width: 0;
       margin: 0;
-      padding: 0 56px;
+      padding: 0;
       color: #171B2B;
-      font-size: clamp(23px, 6vw, 28px);
+      font-size: clamp(18px, 5vw, 25px);
       font-weight: 600;
       letter-spacing: -0.04em;
       line-height: 1.2;
       text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    #courseScreen:has(#courseDetail:not([hidden])) .course-title {
+      font-size: clamp(13px, 3.85vw, 15px);
     }
     .course-content {
       width: 100%;
@@ -326,7 +335,7 @@
       height: 62px;
       align-items: center;
       gap: 12px;
-      margin: -24px auto 28px;
+      margin: 12px auto 28px;
       padding: 0 10px 0 20px;
       border: 1px solid rgba(228, 229, 234, 0.85);
       border-radius: 28px;
@@ -574,7 +583,6 @@
       .course-art { width: 80px; height: 80px; }
     }
     @media (min-width: 700px) {
-      .course-header { min-height: 176px; }
       .course-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
       .course-card { min-height: 210px; }
     }
@@ -802,6 +810,18 @@
         </svg>
         <input id="courseSearch" type="search" placeholder="Search Courses (e.g., BT-101)" aria-label="Search courses by course code" autocomplete="off">
         <button class="course-clear" id="clearSearch" type="button" aria-label="Clear search" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <path d="m18 6-12 12M6 6l12 12"></path>
+          </svg>
+        </button>
+      </form>
+      <form class="course-search" id="subcategorySearchForm" role="search" hidden>
+        <svg class="course-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="m20 20-4-4"></path>
+        </svg>
+        <input id="subcategorySearch" type="search" placeholder="Search Subcategories" aria-label="Search subcategories" autocomplete="off">
+        <button class="course-clear" id="clearSubcategorySearch" type="button" aria-label="Clear subcategory search" hidden>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
             <path d="m18 6-12 12M6 6l12 12"></path>
           </svg>
@@ -1118,6 +1138,9 @@
     const notificationsDismissAll = document.getElementById('notificationsDismissAll');
     const searchInput = document.getElementById('courseSearch');
     const clearSearchButton = document.getElementById('clearSearch');
+    const subcategorySearchForm = document.getElementById('subcategorySearchForm');
+    const subcategorySearchInput = document.getElementById('subcategorySearch');
+    const clearSubcategorySearchButton = document.getElementById('clearSubcategorySearch');
     const emptyState = document.getElementById('emptyState');
     const courseGrid = document.getElementById('courseGrid');
     const courseDetail = document.getElementById('courseDetail');
@@ -1265,6 +1288,8 @@
 
     function switchView(viewName, pushState = true) {
       selectedCourseKey = '';
+      searchInput.value = '';
+      subcategorySearchInput.value = '';
       renderStudentCourses();
       renderView(viewName);
       const state = { appScreen: true, screen: viewName, courseKey: '', layer: 'screen', root: !pushState };
@@ -1292,6 +1317,7 @@
     }
 
     function openStudentCourse(courseKey) {
+      subcategorySearchInput.value = '';
       selectedCourseKey = courseKey;
       const state = {
         appScreen: true,
@@ -1309,6 +1335,7 @@
 
     function openNotifications() {
       selectedCourseKey = '';
+      subcategorySearchInput.value = '';
       const state = {
         appScreen: true,
         screen: 'notifications',
@@ -1365,6 +1392,7 @@
       }
 
       lastAppHistoryState = state;
+      if ((state.courseKey || '') !== selectedCourseKey) subcategorySearchInput.value = '';
       selectedCourseKey = state.courseKey || '';
       renderView(state.screen || 'home');
       renderStudentCourses();
@@ -1383,6 +1411,10 @@
 
     function filterCourses() {
       renderStudentCourses();
+    }
+
+    function filterSubcategories() {
+      renderCourseDetail();
     }
 
     function createCourseArt() {
@@ -1436,6 +1468,10 @@
         visibleCount += 1;
       });
       clearSearchButton.hidden = query.length === 0;
+      const course = studentCourses[selectedCourseKey];
+      const showingDetail = Boolean(course);
+      document.getElementById('courseSearchForm').hidden = showingDetail;
+      subcategorySearchForm.hidden = !showingDetail;
       renderCourseDetail();
       courseGrid.hidden = !courseDetail.hidden;
       emptyState.textContent = query ? 'No courses found.' : 'No courses are available yet.';
@@ -1462,9 +1498,12 @@
       document.getElementById('courseTitle').textContent =
         `${course.code || selectedCourseKey.toUpperCase()}${course.title ? ` — ${course.title}` : ''}`;
       subcategoryList.replaceChildren();
+      const query = subcategorySearchInput.value.trim().toUpperCase();
       const subcategories = Object.entries(course.subcategories || {}).filter(([, item]) => item && typeof item === 'object');
       subcategories.sort(([, a], [, b]) => String(a.title || '').localeCompare(String(b.title || '')));
+      let visibleCount = 0;
       subcategories.forEach(([key, item]) => {
+        if (!String(item.title || key).toUpperCase().includes(query)) return;
         const card = document.createElement('button');
         card.type = 'button';
         card.className = 'course-card';
@@ -1475,9 +1514,12 @@
         title.textContent = item.title || key;
         card.append(title);
         subcategoryList.append(card);
+        visibleCount += 1;
       });
+      clearSubcategorySearchButton.hidden = query.length === 0;
       const subcategoryEmpty = document.getElementById('subcategoryEmptyState');
-      subcategoryEmpty.hidden = subcategories.length > 0;
+      subcategoryEmpty.textContent = query ? 'No subcategories found.' : 'No subcategories are available for this course yet.';
+      subcategoryEmpty.hidden = visibleCount > 0;
     }
 
     function renderRecentlyViewed() {
@@ -1800,6 +1842,7 @@
           return;
         }
         selectedCourseKey = '';
+        subcategorySearchInput.value = '';
         const state = {
           appScreen: true,
           screen: 'courses',
@@ -1843,6 +1886,13 @@
         }
       });
     }
+    if (clearSubcategorySearchButton) {
+      clearSubcategorySearchButton.addEventListener('click', () => {
+        subcategorySearchInput.value = '';
+        filterSubcategories();
+        subcategorySearchInput.focus();
+      });
+    }
 
     bindHomeCard(startLearningCard, openCourses);
     bindHomeCard(document.getElementById('quizCard'), () => openUtilityScreen('quiz'));
@@ -1860,6 +1910,7 @@
     }
 
     if (searchInput) searchInput.addEventListener('input', filterCourses);
+    if (subcategorySearchInput) subcategorySearchInput.addEventListener('input', filterSubcategories);
     if (clearSearchButton) {
       clearSearchButton.addEventListener('click', () => {
         searchInput.value = '';
