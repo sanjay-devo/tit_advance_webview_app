@@ -64,6 +64,17 @@
                 <div id="subcategoryList" class="list"></div>
               </div>
             </details>
+            <details class="panel collapsible-panel" style="padding:18px" open>
+              <summary class="panel-summary" aria-labelledby="notificationsHeading"><h3 id="notificationsHeading">Notifications</h3><svg class="panel-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg></summary>
+              <div class="panel-content">
+                <form id="notificationForm" class="stack" style="margin:14px 0">
+                  <div class="field"><label for="notificationTitle">Title</label><input id="notificationTitle" maxlength="120" placeholder="Course update" required></div>
+                  <div class="field"><label for="notificationMessage">Message</label><textarea id="notificationMessage" maxlength="500" placeholder="Tell students what changed" required></textarea></div>
+                  <div class="actions"><button id="saveNotification" class="btn primary" type="submit">Publish notification</button><button id="cancelNotification" class="btn" type="button" hidden>Cancel edit</button></div>
+                </form>
+                <div id="notificationList" class="list" aria-live="polite"></div>
+              </div>
+            </details>
           </div>
         </div>
       </section>
@@ -87,8 +98,10 @@
       const mainStatus = document.getElementById('mainStatus');
       const courseForm = document.getElementById('courseForm');
       const subcategoryForm = document.getElementById('subcategoryForm');
+      const notificationForm = document.getElementById('notificationForm');
       const courseList = document.getElementById('courseList');
       const subcategoryList = document.getElementById('subcategoryList');
+      const notificationList = document.getElementById('notificationList');
       let authSession;
       try {
         authSession = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
@@ -100,10 +113,12 @@
         return;
       }
       let courses = {};
+      let notifications = {};
       let selectedCourseKey = '';
       let selectedSubcategoryKey = '';
       let editingCourseKey = '';
       let editingSubcategoryKey = '';
+      let editingNotificationKey = '';
       let busy = false;
 
       function setStatus(element, message, kind) {
@@ -132,6 +147,10 @@
 
       function coursePath(key = '') {
         return `/advance/courses${key ? `/${encodeURIComponent(key)}` : ''}`;
+      }
+
+      function notificationPath(key = '') {
+        return `/advance/notifications${key ? `/${encodeURIComponent(key)}` : ''}`;
       }
 
       function childPath(courseKey, childType, childKey = '') {
@@ -296,6 +315,71 @@
         return node;
       }
 
+      function renderNotificationsPanel() {
+        if (!notificationList) return;
+        notificationList.replaceChildren();
+        const entries = Object.entries(notifications || {}).filter(([, value]) => value && typeof value === 'object');
+        entries.sort(([, a], [, b]) => Number(b.createdAt || 0) - Number(a.createdAt || 0));
+        if (!entries.length) {
+          notificationList.append(emptyElement('No shared notifications yet.'));
+          return;
+        }
+        entries.forEach(([key, item]) => {
+          const article = document.createElement('article');
+          article.className = 'record';
+          const titleRow = document.createElement('div');
+          titleRow.className = 'item-head record-head';
+          const heading = document.createElement('div');
+          heading.className = 'record-name';
+          heading.textContent = item.title || key;
+          const meta = document.createElement('div');
+          meta.className = 'record-actions';
+          const editBtn = document.createElement('button');
+          editBtn.type = 'button';
+          editBtn.className = 'btn small';
+          editBtn.textContent = 'Edit';
+          editBtn.addEventListener('click', () => {
+            document.getElementById('notificationTitle').value = item.title || '';
+            document.getElementById('notificationMessage').value = item.subtitle || item.message || '';
+            editingNotificationKey = key;
+            document.getElementById('saveNotification').textContent = 'Save notification';
+            document.getElementById('cancelNotification').hidden = false;
+            document.getElementById('notificationTitle').focus();
+          });
+          const deleteBtn = document.createElement('button');
+          deleteBtn.type = 'button';
+          deleteBtn.className = 'btn small danger';
+          deleteBtn.textContent = 'Delete';
+          deleteBtn.addEventListener('click', async () => {
+            if (!confirm(`Delete the shared notification "${item.title || key}"?`)) return;
+            await mutate(async () => {
+              await dbRequest(notificationPath(key), { method: 'DELETE' });
+              if (editingNotificationKey === key) {
+                editingNotificationKey = '';
+                document.getElementById('notificationForm').reset();
+                document.getElementById('saveNotification').textContent = 'Publish notification';
+                document.getElementById('cancelNotification').hidden = true;
+              }
+            }, 'Notification deleted.');
+          });
+          meta.append(editBtn, deleteBtn);
+          titleRow.append(heading, meta);
+          article.append(titleRow);
+          const details = document.createElement('div');
+          details.className = 'record-details';
+          const subtitle = document.createElement('div');
+          subtitle.className = 'record-key';
+          subtitle.textContent = item.subtitle || item.message || 'No message';
+          const stamp = document.createElement('div');
+          stamp.className = 'record-key';
+          const created = Number(item.createdAt || item.updatedAt || 0);
+          stamp.textContent = Number.isFinite(created) && created > 0 ? new Date(created).toLocaleString() : 'Date unavailable';
+          details.append(subtitle, stamp);
+          article.append(details);
+          notificationList.append(article);
+        });
+      }
+
       function render() {
         const entries = Object.entries(courses).filter(([, value]) => value && typeof value === 'object');
         courseList.replaceChildren();
@@ -386,6 +470,21 @@
         }
       }
 
+      async function loadNotifications(message = 'Refreshing notifications…') {
+        setBusy(true, message);
+        try {
+          notifications = await dbRequest(notificationPath()) || {};
+          if (!notifications || typeof notifications !== 'object' || Array.isArray(notifications)) notifications = {};
+          renderNotificationsPanel();
+          return true;
+        } catch (error) {
+          showError(error);
+          return false;
+        } finally {
+          setBusy(false);
+        }
+      }
+
       async function mutate(operation, successMessage) {
         if (busy) return;
         setBusy(true, 'Saving changes…');
@@ -429,15 +528,27 @@
         localStorage.removeItem(SESSION_KEY);
         window.location.replace('./login.html?logout=1');
       });
-      document.getElementById('refreshButton').addEventListener('click', () => loadCourses());
+      document.getElementById('refreshButton').addEventListener('click', async () => {
+        await loadCourses('Refreshing course data…');
+        await loadNotifications('Refreshing notifications…');
+      });
       document.getElementById('cancelCourse').addEventListener('click', resetCourseForm);
       document.getElementById('cancelSubcategory').addEventListener('click', resetSubcategoryForm);
+      document.getElementById('cancelNotification').addEventListener('click', () => {
+        editingNotificationKey = '';
+        notificationForm.reset();
+        document.getElementById('saveNotification').textContent = 'Publish notification';
+        document.getElementById('cancelNotification').hidden = true;
+      });
       setStatus(mainStatus, 'Checking administrator access…', 'loading');
       verifyAdminRole().then((isAdmin) => {
         if (!isAdmin) return;
         adminPanel.hidden = false;
         document.getElementById('signedInAs').textContent = `Signed in as ${authSession.email || 'administrator'} · UID: ${authSession.uid}`;
-        return loadCourses('Loading course data…');
+        return Promise.all([
+          loadCourses('Loading course data…'),
+          loadNotifications('Loading notifications…')
+        ]);
       }).catch((error) => {
         console.error('Unable to verify admin role for this Firebase user.', error);
         localStorage.removeItem(SESSION_KEY);
@@ -496,7 +607,43 @@
         }, editingSubcategoryKey ? 'Subcategory updated.' : 'Subcategory added.');
       });
 
+      notificationForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const title = document.getElementById('notificationTitle').value.trim();
+        const subtitle = document.getElementById('notificationMessage').value.trim();
+        if (!title || !subtitle) {
+          setStatus(mainStatus, 'Title and message are both required.', 'error');
+          return;
+        }
+        const now = Date.now();
+        const value = {
+          title,
+          subtitle,
+          active: true,
+          createdAt: now,
+          updatedAt: now
+        };
+        await mutate(async () => {
+          if (editingNotificationKey) {
+            await dbRequest(notificationPath(editingNotificationKey), {
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ ...value, active: true })
+            });
+          } else {
+            const key = `n-${Date.now()}-${String(Math.random()).slice(2, 8)}`;
+            await createRecord(notificationPath(key), value);
+          }
+          editingNotificationKey = '';
+          notificationForm.reset();
+          document.getElementById('saveNotification').textContent = 'Publish notification';
+          document.getElementById('cancelNotification').hidden = true;
+        }, editingNotificationKey ? 'Notification updated.' : 'Notification published.');
+        await loadNotifications('Reloading notifications…');
+      });
+
       render();
+      renderNotificationsPanel();
     })();
   </script>
 </body>

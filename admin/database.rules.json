@@ -10,6 +10,16 @@
       "courses": {
         ".read": true,
         ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() == 'admin'"
+      },
+      "notifications": {
+        ".read": true,
+        ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() == 'admin'"
+      },
+      "notificationUsers": {
+        "$uid": {
+          ".read": "auth != null && auth.uid == $uid",
+          ".write": "auth != null && auth.uid == $uid"
+        }
       }
     }
   }

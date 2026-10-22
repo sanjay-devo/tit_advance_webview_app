@@ -160,6 +160,134 @@
       height: 22px;
       pointer-events: none;
     }
+    .notification-badge {
+      position: absolute;
+      top: -5px;
+      right: -7px;
+      display: grid;
+      min-width: 19px;
+      height: 19px;
+      place-items: center;
+      padding: 0 5px;
+      border: 2px solid #FFFFFF;
+      border-radius: 999px;
+      background: #D92F32;
+      color: #FFFFFF;
+      font-size: 10px;
+      font-weight: 600;
+      line-height: 1;
+      pointer-events: none;
+    }
+    .notification-badge[hidden] {
+      display: none;
+    }
+    .notifications-dismiss-all {
+      position: absolute;
+      z-index: 3;
+      top: calc(env(safe-area-inset-top, 0px) + 20px);
+      right: clamp(20px, 5vw, 36px);
+      display: grid;
+      width: 48px;
+      height: 48px;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.72);
+      color: #626B7D;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+    .notifications-dismiss-all:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+    .notifications-dismiss-all svg {
+      width: 21px;
+      height: 21px;
+      pointer-events: none;
+    }
+    .notification-content {
+      width: 100%;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 24px 20px 144px;
+    }
+    .notification-guidance,
+    .notification-status,
+    .notification-empty {
+      margin: 0 0 16px;
+      color: #626B7D;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .notification-status:empty {
+      display: none;
+    }
+    .notification-status.error {
+      color: #D92F32;
+    }
+    .notification-list {
+      display: grid;
+      gap: 14px;
+    }
+    .notification-card {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 48px;
+      align-items: start;
+      gap: 12px;
+      padding: 18px;
+      border: 1px solid #E8E1ED;
+      border-radius: 24px;
+      background: #FEFBF6;
+      box-shadow: 0 8px 24px rgba(36, 48, 68, 0.04);
+    }
+    .notification-card.unread {
+      border-color: rgba(246, 160, 74, 0.72);
+      box-shadow: 0 8px 24px rgba(246, 160, 74, 0.1);
+    }
+    .notification-card h2 {
+      margin: 0;
+      color: #171B2B;
+      font-size: 17px;
+      font-weight: 600;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+    .notification-date {
+      margin: 4px 0 0;
+      color: #A5A7AA;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+    .notification-message {
+      margin: 12px 0 0;
+      color: #626B7D;
+      font-size: 14px;
+      line-height: 1.55;
+      overflow-wrap: anywhere;
+      white-space: pre-wrap;
+    }
+    .notification-dismiss {
+      display: grid;
+      width: 48px;
+      height: 48px;
+      place-items: center;
+      border: 1px solid #E4E5EA;
+      border-radius: 16px;
+      background: #FFFFFF;
+      color: #626B7D;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+    .notification-dismiss svg {
+      width: 20px;
+      height: 20px;
+      pointer-events: none;
+    }
+    .notification-dismiss:disabled {
+      cursor: progress;
+      opacity: 0.55;
+    }
     .course-title {
       position: relative;
       z-index: 1;
@@ -369,6 +497,10 @@
         width: 56px;
         height: 56px;
       }
+      .notifications-dismiss-all {
+        width: 56px;
+        height: 56px;
+      }
       #communityScreen main > div > a {
         gap: 12px;
         padding: 12px 14px;
@@ -441,11 +573,12 @@
         <!-- Header Utility Buttons -->
         <div class="flex items-center space-x-2.5">
           <!-- Notification / Bell Icon -->
-          <button type="button" aria-label="Notifications" class="w-11 h-11 rounded-2xl bg-white/60 hover:bg-white/80 active:scale-90 backdrop-blur-md flex items-center justify-center text-app-primary border border-white/40 shadow-sm transition-all duration-150">
+          <button type="button" id="notificationsBell" aria-label="Notifications" class="relative w-11 h-11 rounded-2xl bg-white/60 hover:bg-white/80 active:scale-90 backdrop-blur-md flex items-center justify-center text-app-primary border border-white/40 shadow-sm transition-all duration-150">
             <svg class="w-5 h-5 text-app-primary" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
               <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
               <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
             </svg>
+            <span id="notificationBadge" class="notification-badge" aria-hidden="true" hidden></span>
           </button>
 
           <!-- Share Icon -->
@@ -664,6 +797,31 @@
     </div>
   </dialog>
 
+  <section id="notificationsScreen" class="screen course-screen" aria-labelledby="notificationsTitle" hidden>
+    <header class="course-header">
+      <button class="course-back" id="notificationsBack" type="button" aria-label="Go back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M15 18 9 12l6-6"></path>
+        </svg>
+      </button>
+      <h1 class="course-title" id="notificationsTitle">Notifications</h1>
+      <button class="notifications-dismiss-all" id="notificationsDismissAll" type="button" aria-label="Dismiss all notifications" title="Dismiss all notifications">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 6h18"></path>
+          <path d="m8 6 1 14h6l1-14"></path>
+          <path d="M10 6V4h4v2"></path>
+          <path d="M10 10v6M14 10v6"></path>
+        </svg>
+      </button>
+    </header>
+    <main class="notification-content">
+      <p class="notification-guidance">Notifications are marked as read when this page opens.</p>
+      <p id="notificationStatus" class="notification-status" role="status" aria-live="polite">Connecting to notifications…</p>
+      <div id="notificationList" class="notification-list" aria-live="polite"></div>
+      <p id="notificationEmpty" class="notification-empty" hidden>No notifications yet.</p>
+    </main>
+  </section>
+
   <!-- Community Screen -->
   <section id="communityScreen" class="screen course-screen" aria-labelledby="communityTitle" hidden>
     <header class="course-header">
@@ -873,7 +1031,14 @@
     const pdfViewerFrame = document.getElementById('pdf-viewer-frame');
     const communityScreen = document.getElementById('communityScreen');
     const settingsScreen = document.getElementById('settingsScreen');
+    const notificationsScreen = document.getElementById('notificationsScreen');
     const startLearningCard = document.getElementById('startLearningCard');
+    const notificationsBell = document.getElementById('notificationsBell');
+    const notificationBadge = document.getElementById('notificationBadge');
+    const notificationList = document.getElementById('notificationList');
+    const notificationStatus = document.getElementById('notificationStatus');
+    const notificationEmpty = document.getElementById('notificationEmpty');
+    const notificationsDismissAll = document.getElementById('notificationsDismissAll');
     const searchInput = document.getElementById('courseSearch');
     const clearSearchButton = document.getElementById('clearSearch');
     const emptyState = document.getElementById('emptyState');
@@ -884,6 +1049,14 @@
     let studentCourses = {};
     let selectedCourseKey = '';
     let studentCoursesLoading = false;
+    let sharedNotifications = {};
+    let notificationUserStates = {};
+    let notificationDataLoaded = false;
+    let notificationUserStatesLoaded = false;
+    let notificationsConnected = null;
+    let notificationsError = '';
+    let notificationActionError = '';
+    const pendingNotificationActions = new Set();
 
     const navHome = document.getElementById('navHome');
     const navCommunity = document.getElementById('navCommunity');
@@ -913,12 +1086,17 @@
     function renderView(viewName) {
       homeScreen.hidden = (viewName !== 'home');
       courseScreen.hidden = (viewName !== 'courses');
+      if (notificationsScreen) notificationsScreen.hidden = (viewName !== 'notifications');
       if (communityScreen) communityScreen.hidden = (viewName !== 'community');
       if (settingsScreen) settingsScreen.hidden = (viewName !== 'settings');
 
       if (viewName === 'home') {
         document.title = 'Student Learning Portal - Home';
         updateNavHighlight('home');
+      } else if (viewName === 'notifications') {
+        document.title = 'Notifications | TIT Advance';
+        updateNavHighlight('home');
+        renderNotifications();
       } else if (viewName === 'courses') {
         document.title = 'BT Courses';
         updateNavHighlight('home');
@@ -953,6 +1131,22 @@
       switchView('courses');
     }
 
+    function openNotifications() {
+      selectedCourseKey = '';
+      const state = {
+        appScreen: true,
+        screen: 'notifications',
+        courseKey: '',
+        layer: 'screen',
+        returnScreen: lastAppHistoryState && lastAppHistoryState.screen || 'home',
+        root: false
+      };
+      history.pushState(state, '', '#notifications');
+      lastAppHistoryState = state;
+      renderStudentCourses();
+      renderView('notifications');
+    }
+
     function returnHome() {
       switchView('home', false);
     }
@@ -965,6 +1159,11 @@
         switchView('community', false);
       } else if (hash === '#settings') {
         switchView('settings', false);
+      } else if (hash === '#notifications') {
+        const homeState = { appScreen: true, screen: 'home', courseKey: '', layer: 'screen', root: true };
+        history.replaceState(homeState, '', window.location.pathname);
+        lastAppHistoryState = homeState;
+        openNotifications();
       } else {
         switchView('home', false);
       }
@@ -1098,6 +1297,122 @@
       const subcategoryEmpty = document.getElementById('subcategoryEmptyState');
       subcategoryEmpty.hidden = subcategories.length > 0;
     }
+
+    function visibleNotifications() {
+      return Object.entries(sharedNotifications)
+        .filter(([id, item]) => item && typeof item === 'object' && item.active !== false &&
+          !(notificationUserStates[id] && notificationUserStates[id].dismissed === true))
+        .sort(([, a], [, b]) => Number(b.createdAt || 0) - Number(a.createdAt || 0));
+    }
+
+    function renderNotifications() {
+      if (!notificationList) return;
+      const items = visibleNotifications();
+      const unreadCount = items.reduce((count, [id]) =>
+        count + (notificationUserStates[id] && notificationUserStates[id].read === true ? 0 : 1), 0);
+      notificationBadge.hidden = unreadCount === 0;
+      notificationBadge.textContent = unreadCount > 99 ? '99+' : String(unreadCount);
+      notificationsBell.setAttribute('aria-label', unreadCount
+        ? `Notifications, ${unreadCount} unread` : 'Notifications');
+      notificationsDismissAll.disabled = items.length === 0 || !notificationDataLoaded ||
+        !notificationUserStatesLoaded || pendingNotificationActions.has('*');
+      notificationList.replaceChildren();
+
+      if (notificationsError) {
+        notificationStatus.textContent = notificationsError;
+        notificationStatus.className = 'notification-status error';
+      } else if (notificationsConnected === false) {
+        notificationStatus.textContent = 'You are offline. Showing the last synced notifications.';
+        notificationStatus.className = 'notification-status';
+      } else if (!notificationDataLoaded || !notificationUserStatesLoaded) {
+        notificationStatus.textContent = 'Loading notifications…';
+        notificationStatus.className = 'notification-status';
+      } else if (notificationActionError) {
+        notificationStatus.textContent = notificationActionError;
+        notificationStatus.className = 'notification-status error';
+      } else {
+        notificationStatus.textContent = '';
+        notificationStatus.className = 'notification-status';
+      }
+
+      notificationEmpty.hidden = items.length > 0 || !notificationDataLoaded ||
+        !notificationUserStatesLoaded || Boolean(notificationsError);
+      for (const [id, item] of items) {
+        const read = notificationUserStates[id] && notificationUserStates[id].read === true;
+        const card = document.createElement('article');
+        card.className = `notification-card${read ? '' : ' unread'}`;
+        const content = document.createElement('div');
+        const title = document.createElement('h2');
+        title.textContent = String(item.title || 'Notification');
+        const date = document.createElement('p');
+        date.className = 'notification-date';
+        const timestamp = Number(item.createdAt);
+        date.textContent = Number.isFinite(timestamp) && timestamp > 0
+          ? new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(timestamp))
+          : 'Date unavailable';
+        const message = document.createElement('p');
+        message.className = 'notification-message';
+        message.textContent = String(item.subtitle || '');
+        content.append(title, date, message);
+
+        const dismiss = document.createElement('button');
+        dismiss.type = 'button';
+        dismiss.className = 'notification-dismiss';
+        dismiss.setAttribute('aria-label', `Dismiss ${String(item.title || 'notification')}`);
+        dismiss.title = 'Dismiss notification';
+        dismiss.disabled = pendingNotificationActions.has('*') || pendingNotificationActions.has(id);
+        dismiss.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"></path><path d="m8 6 1 14h6l1-14"></path><path d="M10 6V4h4v2"></path><path d="M10 10v6M14 10v6"></path></svg>';
+        dismiss.addEventListener('click', () => {
+          notificationActionError = '';
+          pendingNotificationActions.add(id);
+          renderNotifications();
+          window.dispatchEvent(new CustomEvent('tit-notification-dismiss-request', { detail: { id } }));
+        });
+        card.append(content, dismiss);
+        notificationList.append(card);
+      }
+    }
+
+    window.addEventListener('tit-notifications-state', (event) => {
+      const detail = event.detail || {};
+      if (detail.notifications) {
+        sharedNotifications = detail.notifications;
+        notificationDataLoaded = true;
+      }
+      if (detail.userStates) {
+        notificationUserStates = detail.userStates;
+        notificationUserStatesLoaded = true;
+      }
+      if (Object.prototype.hasOwnProperty.call(detail, 'connected')) notificationsConnected = detail.connected;
+      if (Object.prototype.hasOwnProperty.call(detail, 'error')) notificationsError = detail.error || '';
+      renderNotifications();
+      if (!notificationsScreen.hidden) window.dispatchEvent(new Event('tit-notifications-opened'));
+    });
+
+    window.addEventListener('tit-notification-action-result', (event) => {
+      const detail = event.detail || {};
+      for (const id of detail.ids || []) pendingNotificationActions.delete(id);
+      if (detail.all) pendingNotificationActions.delete('*');
+      notificationActionError = detail.error || '';
+      renderNotifications();
+    });
+
+    notificationsBell.addEventListener('click', openNotifications);
+    document.getElementById('notificationsBack').addEventListener('click', () => {
+      if (history.state && history.state.appScreen && history.state.screen === 'notifications' && history.length > 1) {
+        history.back();
+      } else {
+        returnHome();
+      }
+    });
+    notificationsDismissAll.addEventListener('click', () => {
+      const ids = visibleNotifications().map(([id]) => id);
+      if (!ids.length || !confirm('Dismiss all notifications for this device? They will remain available to other users.')) return;
+      notificationActionError = '';
+      pendingNotificationActions.add('*');
+      renderNotifications();
+      window.dispatchEvent(new CustomEvent('tit-notification-dismiss-request', { detail: { ids, all: true } }));
+    });
 
     function openCourseDocument(subcategory) {
       try {
@@ -1339,6 +1654,216 @@
     if (history.state && history.state.appScreen && history.state.root) {
       history.pushState({ ...history.state, historyGuard: true }, '', window.location.href);
     }
+  </script>
+  <script type="module">
+    import { getApp, getApps, initializeApp } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js';
+    import {
+      browserLocalPersistence,
+      getAuth,
+      onAuthStateChanged,
+      setPersistence,
+      signInAnonymously
+    } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
+    import {
+      getDatabase,
+      onValue,
+      ref,
+      serverTimestamp,
+      update
+    } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js';
+
+    const firebaseConfig = {
+      apiKey: 'AIzaSyAXMh2e_ZNW7Ivx200JqYs4MLTBwyOi9yA',
+      authDomain: 'tit-groups.firebaseapp.com',
+      databaseURL: 'https://tit-groups-default-rtdb.firebaseio.com',
+      projectId: 'tit-groups',
+      storageBucket: 'tit-groups.firebasestorage.app',
+      messagingSenderId: '658719825802',
+      appId: '1:658719825802:web:2bd8b465073617db1bf273'
+    };
+    const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const database = getDatabase(app);
+    let currentUid = '';
+    let notifications = {};
+    let userStates = {};
+    let feedLoaded = false;
+    let userStatesLoaded = false;
+    let connected = null;
+    let feedError = '';
+    let userError = '';
+    let unsubscribeFeed = null;
+    let unsubscribeUserStates = null;
+    let unsubscribeConnection = null;
+    let anonymousSignInPending = false;
+    let readUpdatePending = false;
+    const dismissUpdatesPending = new Set();
+
+    function publishState() {
+      window.dispatchEvent(new CustomEvent('tit-notifications-state', {
+        detail: {
+          notifications: feedLoaded ? notifications : null,
+          userStates: userStatesLoaded ? userStates : null,
+          connected,
+          error: feedError || userError
+        }
+      }));
+    }
+
+    function recordsOrEmpty(value, description) {
+      if (value === null) return {};
+      if (!value || typeof value !== 'object' || Array.isArray(value)) {
+        throw new Error(`Firebase returned invalid ${description} data.`);
+      }
+      return value;
+    }
+
+    function reportListenerError(description, error) {
+      console.error(`Unable to listen for ${description} in Firebase Realtime Database.`, error);
+      if (description === 'notifications') feedError = 'Unable to load notifications. Check your connection and try again.';
+      else userError = 'Unable to load your notification settings. Check Firebase access and try again.';
+      publishState();
+    }
+
+    function markVisibleNotificationsRead() {
+      if (!currentUid || !feedLoaded || !userStatesLoaded || window.location.hash !== '#notifications' || readUpdatePending) return;
+      const patch = {};
+      for (const [id, notification] of Object.entries(notifications)) {
+        if (!notification || notification.active === false ||
+            (userStates[id] && (userStates[id].dismissed === true || userStates[id].read === true))) continue;
+        patch[`${id}/read`] = true;
+        patch[`${id}/readAt`] = serverTimestamp();
+      }
+      if (!Object.keys(patch).length) return;
+      readUpdatePending = true;
+      update(ref(database, `advance/notificationUsers/${currentUid}`), patch).then(() => {
+        for (const id of Object.keys(patch).filter((key) => key.endsWith('/read'))) {
+          const notificationId = id.slice(0, -5);
+          userStates[notificationId] = {
+            ...(userStates[notificationId] || {}),
+            read: true,
+            readAt: Date.now()
+          };
+        }
+        userError = '';
+        publishState();
+      }).catch((error) => {
+        console.error('Unable to mark notifications as read.', error);
+        userError = 'Unable to update read status. Check Firebase access and try again.';
+        publishState();
+      }).finally(() => {
+        readUpdatePending = false;
+      });
+    }
+
+    function attachNotificationListeners(user) {
+      if (!user || user.uid === currentUid) return;
+      if (unsubscribeFeed) unsubscribeFeed();
+      if (unsubscribeUserStates) unsubscribeUserStates();
+      if (unsubscribeConnection) unsubscribeConnection();
+      currentUid = user.uid;
+      notifications = {};
+      userStates = {};
+      feedLoaded = false;
+      userStatesLoaded = false;
+      feedError = '';
+      userError = '';
+      connected = null;
+      publishState();
+
+      unsubscribeFeed = onValue(ref(database, 'advance/notifications'), (snapshot) => {
+        try {
+          notifications = recordsOrEmpty(snapshot.val(), 'notification');
+          feedLoaded = true;
+          feedError = '';
+          publishState();
+          markVisibleNotificationsRead();
+        } catch (error) {
+          reportListenerError('notifications', error);
+        }
+      }, (error) => reportListenerError('notifications', error));
+
+      unsubscribeUserStates = onValue(ref(database, `advance/notificationUsers/${user.uid}`), (snapshot) => {
+        try {
+          userStates = recordsOrEmpty(snapshot.val(), 'notification preference');
+          userStatesLoaded = true;
+          userError = '';
+          publishState();
+          markVisibleNotificationsRead();
+        } catch (error) {
+          reportListenerError('notification preferences', error);
+        }
+      }, (error) => reportListenerError('notification preferences', error));
+
+      unsubscribeConnection = onValue(ref(database, '.info/connected'), (snapshot) => {
+        connected = snapshot.val() === true;
+        publishState();
+      }, (error) => {
+        console.error('Unable to read Firebase connection status.', error);
+      });
+    }
+
+    window.addEventListener('tit-notifications-opened', markVisibleNotificationsRead);
+    window.addEventListener('tit-notification-dismiss-request', async (event) => {
+      const detail = event.detail || {};
+      const ids = detail.all ? (detail.ids || []) : [detail.id].filter(Boolean);
+      const all = detail.all === true;
+      if (!currentUid || !ids.length || ids.some((id) => dismissUpdatesPending.has(id))) return;
+      ids.forEach((id) => dismissUpdatesPending.add(id));
+      const patch = {};
+      ids.forEach((id) => {
+        patch[`${id}/dismissed`] = true;
+        patch[`${id}/dismissedAt`] = serverTimestamp();
+      });
+      try {
+        await update(ref(database, `advance/notificationUsers/${currentUid}`), patch);
+        ids.forEach((id) => {
+          userStates[id] = {
+            ...(userStates[id] || {}),
+            dismissed: true,
+            dismissedAt: Date.now()
+          };
+        });
+        userError = '';
+        publishState();
+        window.dispatchEvent(new CustomEvent('tit-notification-action-result', { detail: { ids, all } }));
+      } catch (error) {
+        console.error('Unable to dismiss notifications for this user.', error);
+        window.dispatchEvent(new CustomEvent('tit-notification-action-result', {
+          detail: {
+            ids,
+            all,
+            error: 'Unable to dismiss notifications. Check your connection and try again.'
+          }
+        }));
+      } finally {
+        ids.forEach((id) => dismissUpdatesPending.delete(id));
+      }
+    });
+
+    setPersistence(auth, browserLocalPersistence).then(() => {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          anonymousSignInPending = false;
+          attachNotificationListeners(user);
+          return;
+        }
+        if (anonymousSignInPending) return;
+        anonymousSignInPending = true;
+        signInAnonymously(auth).catch((error) => {
+          anonymousSignInPending = false;
+          console.error('Unable to establish a per-user notification identity.', error);
+          userError = error.code === 'auth/operation-not-allowed'
+            ? 'Notifications need Firebase Anonymous sign-in enabled.'
+            : 'Unable to establish your notification identity. Check your connection and Firebase setup.';
+          publishState();
+        });
+      });
+    }).catch((error) => {
+      console.error('Unable to initialize notification authentication.', error);
+      userError = 'Unable to initialize notification access. Check Firebase Authentication configuration.';
+      publishState();
+    });
   </script>
 </body>
 </html>
