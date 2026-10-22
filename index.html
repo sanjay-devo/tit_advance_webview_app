@@ -910,6 +910,8 @@
     const courseScreen = document.getElementById('courseScreen');
     const pdfViewerModal = document.getElementById('pdf-viewer-modal');
     const pdfViewerContainer = document.getElementById('pdf-viewer-container');
+    const pdfViewerFrame = document.getElementById('pdf-viewer-frame');
+    const pdfViewerUrl = pdfViewerFrame.src;
     const communityScreen = document.getElementById('communityScreen');
     const settingsScreen = document.getElementById('settingsScreen');
     const startLearningCard = document.getElementById('startLearningCard');
@@ -1119,6 +1121,7 @@
         courseScreen.dataset.selectedCourse = card.dataset.courseCode;
         if (card.dataset.courseCode === 'BT-101') {
           pdfViewerContainer.style.display = '';
+          pdfViewerFrame.src = pdfViewerUrl;
           pdfViewerModal.showModal();
         }
       });
@@ -1128,7 +1131,6 @@
       if (event.origin !== 'https://b.indiacybercafe.com' ||
           !event.data || event.data.type !== 'icc-pdf-viewer-close') return;
 
-      pdfViewerContainer.style.display = 'none';
       pdfViewerModal.close();
     });
 
