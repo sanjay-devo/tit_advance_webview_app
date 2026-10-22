@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#F9FAFC">
+  <title>Course Admin | TIT Advance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{color-scheme:light;--bg:#F9FAFC;--surface:#fff;--warm:#FEFBF6;--ink:#171B2B;--secondary:#626B7D;--muted:#A5A7AA;--border:#E4E5EA;--blue:#3767D8;--orange:#F6A04A;--danger:#D92F32;--shadow:0 12px 32px rgb(36 48 68 / 8%);font-family:Poppins,Arial,sans-serif}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);line-height:1.5}.shell{width:min(100% - 32px,1100px);margin:28px auto 56px}
+    .hero{padding:26px clamp(20px,4vw,36px);border:1px solid var(--border);border-radius:32px;background:linear-gradient(120deg,#E9DDF0 0%,#FFF0D8 55%,#F8D8C6 100%);box-shadow:var(--shadow)}
+    .hero-row,.panel-head,.actions,.item-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-size:.9rem;font-weight:600}.hero h1{margin:10px 0 4px;font-size:clamp(1.7rem,5vw,2.35rem);font-weight:600;letter-spacing:-.04em}.hero p{margin:0;color:#4D5668;font-size:.92rem}
+    main{margin-top:20px}.panel{padding:clamp(18px,3vw,28px);border:1px solid var(--border);border-radius:28px;background:var(--surface);box-shadow:var(--shadow)}.panel h2{margin:0 0 16px;font-size:1.1rem;font-weight:600}.panel h3{margin:0;font-size:.98rem;font-weight:600}.hint{margin:0 0 16px;color:var(--secondary);font-size:.88rem}
+    .login{max-width:520px;margin:24px auto}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.full{grid-column:1/-1}.stack{display:grid;gap:14px}.field{display:grid;gap:6px}.field label{font-size:.84rem;font-weight:500}.field input,.field textarea{width:100%;min-height:46px;padding:10px 13px;border:1px solid var(--border);border-radius:14px;background:var(--surface);color:var(--ink);font:inherit;font-size:.92rem}.field textarea{min-height:95px;resize:vertical}.field input:focus,.field textarea:focus{outline:3px solid rgb(55 103 216 / 20%);border-color:var(--blue)}
+    button{font:inherit}.btn{min-height:44px;padding:9px 15px;border:1px solid var(--border);border-radius:14px;background:#fff;color:var(--ink);font-size:.88rem;font-weight:500;cursor:pointer}.btn:hover{background:#F4F6FA}.btn:focus-visible,.link-btn:focus-visible{outline:3px solid rgb(55 103 216 / 35%);outline-offset:2px}.primary{border-color:var(--blue);background:var(--blue);color:#fff}.primary:hover{background:#2D58B8}.danger{border-color:rgb(217 47 50 / 45%);color:var(--danger)}.small{min-height:36px;padding:6px 11px;font-size:.8rem}.link-btn{border:0;background:transparent;color:var(--blue);font:inherit;font-size:.86rem;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+    .status{min-height:24px;margin:12px 0 0;color:var(--secondary);font-size:.86rem}.status.error{color:var(--danger)}.status.success{color:#397D45}.status.loading{display:flex;align-items:center}.status.loading::before{width:15px;height:15px;flex:0 0 15px;margin-right:9px;border:2px solid #C9D2E3;border-top-color:var(--blue);border-radius:50%;content:"";animation:spin .7s linear infinite}.loading{display:inline-flex;align-items:center;gap:9px}.spinner{width:16px;height:16px;border:2px solid #C9D2E3;border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+    .toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}.workspace{display:grid;grid-template-columns:minmax(245px,.8fr) minmax(0,2fr);gap:18px}.list{display:grid;gap:9px;max-height:420px;overflow:auto}.record{padding:12px;border:1px solid var(--border);border-radius:16px;background:var(--warm)}.record.selected{border-color:var(--blue);box-shadow:0 0 0 2px rgb(55 103 216 / 12%)}.record-name{overflow-wrap:anywhere;font-size:.9rem;font-weight:500}.record-key{overflow-wrap:anywhere;color:var(--muted);font-size:.74rem}.record-actions{display:flex;gap:6px}.record-actions button{flex:0 0 auto}
+    .columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.empty{padding:18px;border:1px dashed var(--border);border-radius:16px;color:var(--secondary);font-size:.88rem;text-align:center}
+    [hidden]{display:none!important}.busy{opacity:.65;pointer-events:none}
+    @media(max-width:760px){.workspace,.columns{grid-template-columns:1fr}.list{max-height:260px}.shell{width:min(100% - 24px,1100px);margin:12px auto 36px}.hero{border-radius:26px}}
+    @media(max-width:520px){.grid{grid-template-columns:1fr}.full{grid-column:auto}.hero-row{align-items:flex-start}.panel{border-radius:22px}.record{gap:8px}.record-head{align-items:flex-start}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="hero">
+      <div class="hero-row"><span class="brand">TIT Advance</span><a class="link-btn" href="../index.html">Student app</a></div>
+      <h1>Course Admin</h1>
+      <p>Manage courses and their PDF / ICC Embed links.</p>
+    </header>
+    <main>
+      <section id="adminPanel" class="panel" hidden aria-label="Course management">
+        <div class="toolbar">
+          <div><h2 style="margin:0">Course content</h2><p id="signedInAs" class="hint" style="margin:4px 0 0"></p></div>
+          <div class="actions"><button id="refreshButton" class="btn" type="button">Refresh</button><button id="signOutButton" class="btn" type="button">Sign out</button></div>
+        </div>
+        <p id="mainStatus" class="status loading" role="status" aria-live="polite" aria-busy="true">Checking administrator session…</p>
+        <div class="workspace">
+          <section class="panel" style="padding:18px" aria-labelledby="coursesHeading">
+            <div class="panel-head"><h3 id="coursesHeading">Courses</h3></div>
+            <form id="courseForm" class="stack" style="margin:14px 0">
+              <div class="field"><label for="courseCode">Course code</label><input id="courseCode" maxlength="40" placeholder="BT-101" required></div>
+              <div class="field"><label for="courseTitle">Course title</label><input id="courseTitle" maxlength="100" placeholder="Course name" required></div>
+              <div class="actions"><button id="saveCourse" class="btn primary" type="submit">Add course</button><button id="cancelCourse" class="btn" type="button" hidden>Cancel edit</button></div>
+            </form>
+            <div id="courseList" class="list" aria-live="polite"></div>
+          </section>
+          <div class="stack">
+            <section class="panel" style="padding:18px" aria-labelledby="subcategoriesHeading">
+              <h3 id="subcategoriesHeading">Subcategories</h3>
+              <p id="selectedCourseLabel" class="hint" style="margin:5px 0 12px">Select a course to manage its content.</p>
+              <form id="subcategoryForm" class="stack" style="margin-bottom:14px" hidden>
+                <div class="field"><label for="subcategoryTitle">Subcategory name</label><input id="subcategoryTitle" maxlength="100" placeholder="Syllabus or Unit 1" required></div>
+                <div class="field"><label for="subcategoryUrl">PDF / ICC Embed URL</label><input id="subcategoryUrl" type="url" maxlength="2000" placeholder="https://..." required></div>
+                <div class="actions"><button id="saveSubcategory" class="btn primary" type="submit">Add subcategory</button><button id="cancelSubcategory" class="btn" type="button" hidden>Cancel edit</button></div>
+              </form>
+              <div id="subcategoryList" class="list"></div>
+            </section>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script>
+    (() => {
+      'use strict';
+      const firebaseConfig = {
+        apiKey: 'AIzaSyAXMh2e_ZNW7Ivx200JqYs4MLTBwyOi9yA',
+        authDomain: 'tit-groups.firebaseapp.com',
+        databaseURL: 'https://tit-groups-default-rtdb.firebaseio.com',
+        projectId: 'tit-groups',
+        storageBucket: 'tit-groups.firebasestorage.app',
+        messagingSenderId: '658719825802',
+        appId: '1:658719825802:web:2bd8b465073617db1bf273'
+      };
+      const DB_URL = firebaseConfig.databaseURL;
+      const SESSION_KEY = 'titAdvanceAdminSession';
+      const adminPanel = document.getElementById('adminPanel');
+      const mainStatus = document.getElementById('mainStatus');
+      const courseForm = document.getElementById('courseForm');
+      const subcategoryForm = document.getElementById('subcategoryForm');
+      const courseList = document.getElementById('courseList');
+      const subcategoryList = document.getElementById('subcategoryList');
+      let authSession;
+      try {
+        authSession = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
+      } catch {
+        authSession = null;
+      }
+      if (!authSession || !authSession.idToken || !authSession.refreshToken || !authSession.uid) {
+        window.location.replace('./login.html');
+        return;
+      }
+      let courses = {};
+      let selectedCourseKey = '';
+      let selectedSubcategoryKey = '';
+      let editingCourseKey = '';
+      let editingSubcategoryKey = '';
+      let busy = false;
+
+      function setStatus(element, message, kind) {
+        element.textContent = message || '';
+        element.className = `status${kind ? ` ${kind}` : ''}`;
+        element.setAttribute('aria-busy', String(kind === 'loading'));
+      }
+
+      function setBusy(value, message) {
+        busy = value;
+        adminPanel.classList.toggle('busy', value);
+        if (value) setStatus(mainStatus, message || 'Working…', 'loading');
+      }
+
+      function showError(error) {
+        setStatus(mainStatus, error.message || 'The request failed. Try again.', 'error');
+      }
+
+      function slugify(value) {
+        return value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+      }
+
+      function isSafeKey(value) {
+        return /^[a-z0-9_-]+$/.test(value);
+      }
+
+      function coursePath(key = '') {
+        return `/advance/courses${key ? `/${encodeURIComponent(key)}` : ''}`;
+      }
+
+      function childPath(courseKey, childType, childKey = '') {
+        return `${coursePath(courseKey)}/${childType}${childKey ? `/${encodeURIComponent(childKey)}` : ''}`;
+      }
+
+      async function responseJson(response) {
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          const reason = payload.error && (payload.error.message || payload.error);
+          throw new Error(typeof reason === 'string' ? reason : `Request failed (${response.status}).`);
+        }
+        return payload;
+      }
+
+      async function ensureToken() {
+        if (Date.now() < Number(authSession.tokenExpiry) - 60000) return;
+        const response = await fetch(`https://securetoken.googleapis.com/v1/token?key=${encodeURIComponent(firebaseConfig.apiKey)}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({ grant_type: 'refresh_token', refresh_token: authSession.refreshToken })
+        });
+        let payload;
+        try {
+          payload = await responseJson(response);
+        } catch (error) {
+          if (response.status === 400) {
+            localStorage.removeItem(SESSION_KEY);
+            window.location.replace('./login.html');
+          }
+          throw error;
+        }
+        authSession = {
+          ...authSession,
+          idToken: payload.id_token,
+          refreshToken: payload.refresh_token,
+          tokenExpiry: Date.now() + Number(payload.expires_in || 3600) * 1000
+        };
+        localStorage.setItem(SESSION_KEY, JSON.stringify(authSession));
+      }
+
+      async function verifyAdminRole() {
+        await ensureToken();
+        const identityResponse = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${encodeURIComponent(firebaseConfig.apiKey)}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ idToken: authSession.idToken })
+        });
+        const identity = await responseJson(identityResponse);
+        if (!identity.users || !identity.users.some((user) => user.localId === authSession.uid)) {
+          throw new Error('The signed-in Firebase user could not be verified.');
+        }
+        const profileResponse = await fetch(`${DB_URL}/users/${encodeURIComponent(authSession.uid)}.json?auth=${encodeURIComponent(authSession.idToken)}`, {
+          headers: { Accept: 'application/json' }
+        });
+        const profile = await responseJson(profileResponse);
+        if (!profile || profile.role !== 'admin') {
+          localStorage.removeItem(SESSION_KEY);
+          window.location.replace('./login.html?access=denied');
+          return false;
+        }
+        return true;
+      }
+
+      async function dbRequest(path, options = {}) {
+        await ensureToken();
+        const response = await fetch(`${DB_URL}${path}.json?auth=${encodeURIComponent(authSession.idToken)}`, {
+          ...options,
+          headers: { Accept: 'application/json', ...(options.headers || {}) }
+        });
+        return responseJson(response);
+      }
+
+      async function createRecord(path, value) {
+        await ensureToken();
+        const check = await fetch(`${DB_URL}${path}.json?auth=${encodeURIComponent(authSession.idToken)}`, {
+          headers: { Accept: 'application/json', 'X-Firebase-ETag': 'true' }
+        });
+        const current = await responseJson(check);
+        if (current !== null) throw new Error('That URL-safe key already exists. Choose a different title or key.');
+        const etag = check.headers.get('ETag');
+        if (!etag) throw new Error('The database did not provide an ETag; create was cancelled to avoid overwriting existing data.');
+        const response = await fetch(`${DB_URL}${path}.json?auth=${encodeURIComponent(authSession.idToken)}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', 'If-Match': etag },
+          body: JSON.stringify(value)
+        });
+        if (response.status === 412) throw new Error('This key was created elsewhere. Refresh and choose a different key.');
+        return responseJson(response);
+      }
+
+      function getCourse(key) {
+        return courses[key] || {};
+      }
+
+      function getSubcategories(course) {
+        return course.subcategories && typeof course.subcategories === 'object' ? course.subcategories : {};
+      }
+
+      function recordElement(name, key, selected, onEdit, onDelete, subtitle) {
+        const article = document.createElement('article');
+        article.className = `record${selected ? ' selected' : ''}`;
+        const heading = document.createElement('div');
+        heading.className = 'item-head record-head';
+        const title = document.createElement('div');
+        title.className = 'record-name';
+        title.textContent = name || key;
+        const actions = document.createElement('div');
+        actions.className = 'record-actions';
+        const edit = document.createElement('button');
+        edit.type = 'button';
+        edit.className = 'btn small';
+        edit.textContent = 'Edit';
+        edit.addEventListener('click', onEdit);
+        const remove = document.createElement('button');
+        remove.type = 'button';
+        remove.className = 'btn small danger';
+        remove.textContent = 'Delete';
+        remove.addEventListener('click', onDelete);
+        actions.append(edit, remove);
+        heading.append(title, actions);
+        article.append(heading);
+        const keyLine = document.createElement('div');
+        keyLine.className = 'record-key';
+        keyLine.textContent = subtitle ? `${key} · ${subtitle}` : key;
+        article.append(keyLine);
+        return article;
+      }
+
+      function emptyElement(message) {
+        const node = document.createElement('div');
+        node.className = 'empty';
+        node.textContent = message;
+        return node;
+      }
+
+      function render() {
+        const entries = Object.entries(courses).filter(([, value]) => value && typeof value === 'object');
+        courseList.replaceChildren();
+        if (!entries.length) courseList.append(emptyElement('No courses yet. Add a course to begin.'));
+        entries.sort(([, a], [, b]) => String(a.code || '').localeCompare(String(b.code || '')));
+        for (const [key, course] of entries) {
+          const element = recordElement(course.code || key, key, key === selectedCourseKey,
+            () => {
+              selectedCourseKey = key;
+              selectedSubcategoryKey = '';
+              resetSubcategoryForm();
+              document.getElementById('courseCode').value = course.code || '';
+              document.getElementById('courseTitle').value = course.title || '';
+              editingCourseKey = key;
+              document.getElementById('saveCourse').textContent = 'Save course';
+              document.getElementById('cancelCourse').hidden = false;
+              render();
+            },
+            () => deleteCourse(key),
+            course.title || '');
+          element.addEventListener('click', (event) => {
+            if (event.target.closest('button')) return;
+            selectedCourseKey = key;
+            selectedSubcategoryKey = '';
+            resetSubcategoryForm();
+            render();
+          });
+          courseList.append(element);
+        }
+
+        const course = getCourse(selectedCourseKey);
+        document.getElementById('selectedCourseLabel').textContent = course.code
+          ? `${course.code}${course.title ? ` — ${course.title}` : ''}` : 'Select a course to manage its content.';
+        subcategoryForm.hidden = !selectedCourseKey;
+        subcategoryList.replaceChildren();
+        const subcategories = Object.entries(getSubcategories(course));
+        if (selectedCourseKey && !subcategories.length) subcategoryList.append(emptyElement('No subcategories yet.'));
+        for (const [key, item] of subcategories) {
+          const element = recordElement(item.title || key, key, key === selectedSubcategoryKey,
+            () => {
+              selectedSubcategoryKey = key;
+              document.getElementById('subcategoryTitle').value = item.title || '';
+              document.getElementById('subcategoryUrl').value = item.url || '';
+              editingSubcategoryKey = key;
+              document.getElementById('saveSubcategory').textContent = 'Save subcategory';
+              document.getElementById('cancelSubcategory').hidden = false;
+              render();
+            },
+            () => deleteSubcategory(key),
+            item.url || '');
+          element.addEventListener('click', (event) => {
+            if (event.target.closest('button')) return;
+            selectedSubcategoryKey = key;
+            resetSubcategoryForm();
+            render();
+          });
+          subcategoryList.append(element);
+        }
+      }
+
+      function resetCourseForm() {
+        editingCourseKey = '';
+        courseForm.reset();
+        document.getElementById('saveCourse').textContent = 'Add course';
+        document.getElementById('cancelCourse').hidden = true;
+      }
+
+      function resetSubcategoryForm() {
+        editingSubcategoryKey = '';
+        subcategoryForm.reset();
+        document.getElementById('saveSubcategory').textContent = 'Add subcategory';
+        document.getElementById('cancelSubcategory').hidden = true;
+      }
+
+      async function loadCourses(message = 'Refreshing course data…') {
+        setBusy(true, message);
+        try {
+          courses = await dbRequest(coursePath()) || {};
+          if (!courses || typeof courses !== 'object' || Array.isArray(courses)) courses = {};
+          if (!courses[selectedCourseKey]) selectedCourseKey = '';
+          if (selectedCourseKey && !getSubcategories(getCourse(selectedCourseKey))[selectedSubcategoryKey]) selectedSubcategoryKey = '';
+          render();
+          setStatus(mainStatus, `Loaded ${Object.keys(courses).length} course${Object.keys(courses).length === 1 ? '' : 's'}.`, 'success');
+          return true;
+        } catch (error) {
+          showError(error);
+          return false;
+        } finally {
+          setBusy(false);
+        }
+      }
+
+      async function mutate(operation, successMessage) {
+        if (busy) return;
+        setBusy(true, 'Saving changes…');
+        try {
+          await operation();
+          if (await loadCourses('Updating list…')) setStatus(mainStatus, successMessage, 'success');
+        } catch (error) {
+          showError(error);
+        } finally {
+          setBusy(false);
+        }
+      }
+
+      async function deleteCourse(key) {
+        const course = getCourse(key);
+        if (!confirm(`Delete ${course.code || key} and all of its subcategories? This cannot be undone.`)) return;
+        await mutate(async () => {
+          await dbRequest(coursePath(key), { method: 'DELETE' });
+          if (selectedCourseKey === key) {
+            selectedCourseKey = '';
+            selectedSubcategoryKey = '';
+            resetCourseForm();
+            resetSubcategoryForm();
+          }
+        }, 'Course and its subcategories deleted.');
+      }
+
+      async function deleteSubcategory(key) {
+        const item = getSubcategories(getCourse(selectedCourseKey))[key] || {};
+        if (!confirm(`Delete "${item.title || key}"? This cannot be undone.`)) return;
+        await mutate(async () => {
+          await dbRequest(childPath(selectedCourseKey, 'subcategories', key), { method: 'DELETE' });
+          if (selectedSubcategoryKey === key) {
+            selectedSubcategoryKey = '';
+            resetSubcategoryForm();
+          }
+        }, 'Subcategory deleted.');
+      }
+
+      document.getElementById('signOutButton').addEventListener('click', () => {
+        localStorage.removeItem(SESSION_KEY);
+        window.location.replace('./login.html?logout=1');
+      });
+      document.getElementById('refreshButton').addEventListener('click', () => loadCourses());
+      document.getElementById('cancelCourse').addEventListener('click', resetCourseForm);
+      document.getElementById('cancelSubcategory').addEventListener('click', resetSubcategoryForm);
+      setStatus(mainStatus, 'Checking administrator access…', 'loading');
+      verifyAdminRole().then((isAdmin) => {
+        if (!isAdmin) return;
+        adminPanel.hidden = false;
+        document.getElementById('signedInAs').textContent = `Signed in as ${authSession.email || 'administrator'} · UID: ${authSession.uid}`;
+        return loadCourses('Loading course data…');
+      }).catch((error) => {
+        console.error('Unable to verify admin role for this Firebase user.', error);
+        localStorage.removeItem(SESSION_KEY);
+        window.location.replace('./login.html?access=denied');
+      });
+
+      courseForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const code = document.getElementById('courseCode').value.trim().toUpperCase();
+        const title = document.getElementById('courseTitle').value.trim();
+        if (!/^[A-Z0-9][A-Z0-9 -]{0,39}$/.test(code) || !title) {
+          setStatus(mainStatus, 'Enter a valid course code and title.', 'error');
+          return;
+        }
+        const key = editingCourseKey || slugify(code);
+        if (!isSafeKey(key)) {
+          setStatus(mainStatus, 'Course code must produce a URL-safe key.', 'error');
+          return;
+        }
+        const duplicate = Object.entries(courses).some(([existingKey, item]) =>
+          existingKey !== editingCourseKey && String(item.code || '').toLowerCase() === code.toLowerCase());
+        if (duplicate) {
+          setStatus(mainStatus, 'That course code is already in use.', 'error');
+          return;
+        }
+        await mutate(async () => {
+          if (editingCourseKey) await dbRequest(coursePath(key), { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code, title }) });
+          else await createRecord(coursePath(key), { code, title, subcategories: {} });
+          selectedCourseKey = key;
+          resetCourseForm();
+        }, editingCourseKey ? 'Course updated.' : 'Course added.');
+      });
+
+      subcategoryForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        if (!selectedCourseKey) return;
+        const title = document.getElementById('subcategoryTitle').value.trim();
+        const rawUrl = document.getElementById('subcategoryUrl').value.trim();
+        let parsedUrl;
+        try { parsedUrl = new URL(rawUrl); } catch { parsedUrl = null; }
+        if (!title || !parsedUrl || !['http:', 'https:'].includes(parsedUrl.protocol)) {
+          setStatus(mainStatus, 'Enter a subcategory name and a valid HTTP or HTTPS PDF / ICC Embed URL.', 'error');
+          return;
+        }
+        const key = editingSubcategoryKey || slugify(title) || `item-${Date.now().toString(36)}`;
+        if (!title || !isSafeKey(key)) {
+          setStatus(mainStatus, 'Enter a name that produces a URL-safe subcategory key.', 'error');
+          return;
+        }
+        const value = { title, url: rawUrl };
+        await mutate(async () => {
+          if (editingSubcategoryKey) await dbRequest(childPath(selectedCourseKey, 'subcategories', key), { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(value) });
+          else await createRecord(childPath(selectedCourseKey, 'subcategories', key), value);
+          selectedSubcategoryKey = key;
+          resetSubcategoryForm();
+        }, editingSubcategoryKey ? 'Subcategory updated.' : 'Subcategory added.');
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>

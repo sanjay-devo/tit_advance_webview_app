@@ -45,18 +45,18 @@
       <p>This policy describes what can be determined from the TIT Advance WebView Edition (version 1.0) project and how to make a privacy request. The app provides learning screens and links to services hosted by other organisations.</p>
 
       <h2>Information collected</h2>
-      <p>The app source does not include an account sign-in, an app-operated form for submitting personal information, analytics code, or an app backend that receives user records. It does not ask for your name, email address, phone number, precise location, contacts, photos, or other profile information in the app screens.</p>
+      <p>The student-facing app does not include student account sign-in or an app-operated form for submitting personal information. The separate admin page has Firebase Email/Password sign-in for authorized administrators; when an administrator signs in, the entered email and password are sent directly to Firebase Authentication for verification. Students are not asked to provide these credentials. The project does not include analytics code or a student profile backend.</p>
       <p>When you load the app or follow an external link, the relevant hosting and service providers may receive routine connection and device/browser information (such as an IP address, request details, or technical logs) as part of delivering their services. Their collection and handling are governed by their own policies.</p>
 
       <h2>How information is used</h2>
       <p>Information handled by the app's hosting or linked providers may be used to deliver pages and resources, maintain service operations, and respond to requests you choose to send. The project does not configure an app analytics or advertising service.</p>
 
       <h2>Storage and retention</h2>
-      <p>The app code does not implement an account database or a mechanism that stores submitted personal details. A device or browser may nevertheless retain ordinary web content, temporary cache, or settings under its own WebView/browser behavior. External services may keep logs or information you provide to them under their own retention rules.</p>
-      <p>The Settings screen currently displays an “Offline High-Speed Cache” status and a “Clear” control. The Clear control only changes its label temporarily; it does not implement deletion. Do not rely on it to erase data.</p>
+      <p>Course, subcategory, and document metadata is stored in Firebase Realtime Database at the app's configured course path; this content is intended to be publicly readable by students. The app does not store student profiles there. A device or browser may nevertheless retain ordinary web content, temporary cache, or settings under its own WebView/browser behavior. Firebase and other providers may keep technical logs or administrator account information under their own retention rules.</p>
+      <p>The app currently has no in-app control for clearing stored data or requesting account/data deletion. You can manage locally stored app data through your device settings.</p>
 
       <h2>Sharing and third-party services</h2>
-      <p>The app loads the Poppins font from Google Fonts, the Tailwind CSS script from cdn.tailwindcss.com, and an app image from indiacybercafe.com. Its BT-101 viewer embeds a form page from b.indiacybercafe.com. The app also links to WhatsApp, Google Play, and titadvance.dukans.in. Those providers may receive technical request data or information you submit directly to them. Review their privacy policies before using their services.</p>
+      <p>The app uses Firebase Realtime Database for course content and Firebase Authentication for administrator sign-in. It also loads the Poppins font from Google Fonts, the Tailwind CSS script from cdn.tailwindcss.com, and an app image from indiacybercafe.com. The document viewer embeds URLs added by administrators, which may include Google Drive or other PDF hosts. The app also links to WhatsApp, Google Play, and titadvance.dukans.in. These providers may receive technical request data or information you submit to them. Review their privacy policies before using their services.</p>
       <p>The app does not include code that sells personal information or sends app profile data to advertising or analytics partners.</p>
 
       <h2>Permissions</h2>

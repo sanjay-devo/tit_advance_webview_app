@@ -1,0 +1,16 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": "auth != null && auth.uid == $uid",
+        ".write": "!data.exists() && auth != null && auth.uid == $uid && newData.child('role').val() == 'user'"
+      }
+    },
+    "advance": {
+      "courses": {
+        ".read": true,
+        ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() == 'admin'"
+      }
+    }
+  }
+}

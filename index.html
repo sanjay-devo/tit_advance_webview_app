@@ -301,6 +301,42 @@
       font-size: 15px;
       text-align: center;
     }
+    .course-detail[hidden] {
+      display: none;
+    }
+    .course-detail-back {
+      min-height: 44px;
+      margin-bottom: 16px;
+      padding: 0 16px;
+      border: 1px solid #E4E5EA;
+      border-radius: 999px;
+      background: #FFFFFF;
+      color: #171B2B;
+      font: inherit;
+      cursor: pointer;
+    }
+    .course-detail-title {
+      margin: 0 0 18px;
+      color: #171B2B;
+      font-size: clamp(20px, 5vw, 26px);
+      font-weight: 600;
+    }
+    #pdf-viewer-close {
+      position: fixed;
+      z-index: 1;
+      top: max(12px, env(safe-area-inset-top));
+      right: max(12px, env(safe-area-inset-right));
+      display: grid;
+      width: 44px;
+      height: 44px;
+      place-items: center;
+      border: 1px solid rgba(228, 229, 234, 0.8);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.94);
+      color: #171B2B;
+      box-shadow: 0 8px 24px rgba(36, 48, 68, 0.16);
+      cursor: pointer;
+    }
     #startLearningCard:focus-visible,
     .course-screen button:focus-visible,
     .course-screen input:focus-visible {
@@ -631,90 +667,32 @@
           </svg>
         </button>
       </form>
-      <section class="course-grid" id="courseGrid" aria-label="BT courses">
-        <button class="course-card" type="button" data-course-code="BT-101" aria-pressed="false">
-          <span class="course-art" aria-hidden="true">
-            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M50 18C42 28 38 42 38 58L50 64L62 58C62 42 58 28 50 18Z" fill="#3767D8"/>
-              <path d="M50 18C46 26 43 38 43 54L50 58V18Z" fill="#5F6FE0"/>
-              <circle cx="50" cy="38" r="7" fill="white"/><circle cx="50" cy="38" r="4.5" fill="#64C5CC"/>
-              <path d="M38 52L26 62C25 67 29 70 34 68L38 60V52Z" fill="#F6A04A"/>
-              <path d="M62 52L74 62C75 67 71 70 66 68L62 60V52Z" fill="#F6A04A"/>
-              <path d="M45 64C45 74 50 82 50 82C50 82 55 74 55 64H45Z" fill="#FFD166"/>
-              <path d="M47 64C47 70 50 75 50 75C50 75 53 70 53 64H47Z" fill="#FF5964"/>
-              <circle cx="28" cy="28" r="2.5" fill="#FFF"/><circle cx="72" cy="34" r="2" fill="#FFF"/>
-            </svg>
-          </span>
-          <span class="course-code">BT-101</span>
-        </button>
-        <button class="course-card" type="button" data-course-code="BT-102" aria-pressed="false">
-          <span class="course-art" aria-hidden="true">
-            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M36 28H64V46C64 54 58 60 50 60C42 60 36 54 36 46V28Z" fill="#FFD166"/>
-              <path d="M50 28H64V46C64 54 58 60 50 60V28Z" fill="#F6A04A"/>
-              <path d="M36 34H28C26 34 24 36 24 40C24 45 28 48 36 48V42C31 42 30 40 30 39C30 38 31 38 36 38V34Z" fill="#FFD166"/>
-              <path d="M64 34H72C74 34 76 36 76 40C76 45 72 48 64 48V42C69 42 70 40 70 39C70 38 69 38 64 38V34Z" fill="#F6A04A"/>
-              <path d="M46 60H54V68H46V60Z" fill="#F6A04A"/><path d="M38 68H62V74H38V68Z" fill="#FFD166"/>
-              <circle cx="50" cy="44" r="6" fill="#FFF"/>
-              <path d="M48 44L49.5 45.5L52.5 42" stroke="#5F6FE0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
-          <span class="course-code">BT-102</span>
-        </button>
-        <button class="course-card" type="button" data-course-code="BT-103" aria-pressed="false">
-          <span class="course-art" aria-hidden="true">
-            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="26" y="24" width="48" height="54" rx="6" fill="#3767D8"/>
-              <rect x="30" y="26" width="40" height="50" rx="4" fill="#FFFFFF"/>
-              <line x1="36" y1="36" x2="64" y2="36" stroke="#E4E5EA" stroke-width="2.5" stroke-linecap="round"/>
-              <line x1="36" y1="44" x2="58" y2="44" stroke="#E4E5EA" stroke-width="2.5" stroke-linecap="round"/>
-              <line x1="36" y1="52" x2="62" y2="52" stroke="#E4E5EA" stroke-width="2.5" stroke-linecap="round"/>
-              <path d="M52 22V52L59 46L66 52V22H52Z" fill="#F6A04A"/>
-            </svg>
-          </span>
-          <span class="course-code">BT-103</span>
-        </button>
-        <button class="course-card" type="button" data-course-code="BT-104" aria-pressed="false">
-          <span class="course-art" aria-hidden="true">
-            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="50" cy="50" r="28" fill="#FFFFFF"/><circle cx="50" cy="50" r="24" fill="#3767D8"/>
-              <circle cx="50" cy="50" r="20" fill="#FFFFFF"/>
-              <path d="M50 36V50H60" stroke="#F6A04A" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="50" cy="50" r="3" fill="#3767D8"/>
-              <path d="M26 44C27 34 35 26 46 24" stroke="#64C5CC" stroke-width="3.5" stroke-linecap="round"/>
-              <polygon points="48,20 48,28 54,24" fill="#64C5CC"/>
-            </svg>
-          </span>
-          <span class="course-code">BT-104</span>
-        </button>
-        <button class="course-card" type="button" data-course-code="BT-105" aria-pressed="false">
-          <span class="course-art" aria-hidden="true">
-            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="26" y="24" width="48" height="54" rx="6" fill="#3767D8"/>
-              <rect x="30" y="26" width="40" height="50" rx="4" fill="#FFFFFF"/>
-              <line x1="36" y1="36" x2="64" y2="36" stroke="#E4E5EA" stroke-width="2.5" stroke-linecap="round"/>
-              <line x1="36" y1="44" x2="58" y2="44" stroke="#E4E5EA" stroke-width="2.5" stroke-linecap="round"/>
-              <line x1="36" y1="52" x2="62" y2="52" stroke="#E4E5EA" stroke-width="2.5" stroke-linecap="round"/>
-              <path d="M52 22V52L59 46L66 52V22H52Z" fill="#F6A04A"/>
-            </svg>
-          </span>
-          <span class="course-code">BT-105</span>
-        </button>
-      </section>
+      <section class="course-grid" id="courseGrid" aria-label="Courses"></section>
       <p class="course-empty" id="emptyState" role="status" hidden>No courses found.</p>
+      <section id="courseDetail" class="course-detail" hidden aria-live="polite">
+        <button id="courseDetailBack" class="course-detail-back" type="button">← All courses</button>
+        <h2 id="selectedCourseTitle" class="course-detail-title"></h2>
+        <section class="course-grid" id="subcategoryList" aria-label="Subcategories"></section>
+        <p id="subcategoryEmptyState" class="course-empty" role="status" hidden>No subcategories are available for this course yet.</p>
+      </section>
     </main>
   </section>
 
-  <dialog id="pdf-viewer-modal" class="pdf-viewer-modal" aria-label="Income/Aay Certificate Form">
+  <dialog id="pdf-viewer-modal" class="pdf-viewer-modal" aria-label="PDF document viewer">
     <div id="pdf-viewer-container">
       <iframe
         id="pdf-viewer-frame"
-        src="https://b.indiacybercafe.com/forms-documents/mp-government-forms/incomeaay-certificate-form?from=%2Fforms-documents&amp;embed=1"
-        title="Income/Aay Certificate Form PDF Viewer"
+        src="about:blank"
+        title="PDF document viewer"
         style="border: none;"
         allow="fullscreen"
       ></iframe>
     </div>
+    <button id="pdf-viewer-close" type="button" aria-label="Close document viewer">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <path d="m18 6-12 12M6 6l12 12"></path>
+      </svg>
+    </button>
   </dialog>
 
   <!-- Community Screen -->
@@ -849,8 +827,8 @@
             Technocrats Institute of Technology Advance, Bhopal (Technocrats Group). Devloped by Advance College Students.
           </p>
           <div class="mt-3 pt-3 border-t border-app-border text-xs text-app-muted flex flex-col gap-1">
-            <span>Version: 1.0 (WebView Edition)</span>
-            <span>Host: https://titadvance.dukans.in/</span>
+            <span>Version: 1.0</span>
+            <span>Host: Advance College Students</span>
           </div>
         </div>
 
@@ -923,16 +901,20 @@
     const homeScreen = document.getElementById('homeScreen');
     const courseScreen = document.getElementById('courseScreen');
     const pdfViewerModal = document.getElementById('pdf-viewer-modal');
-    const pdfViewerContainer = document.getElementById('pdf-viewer-container');
     const pdfViewerFrame = document.getElementById('pdf-viewer-frame');
-    const pdfViewerUrl = pdfViewerFrame.src;
     const communityScreen = document.getElementById('communityScreen');
     const settingsScreen = document.getElementById('settingsScreen');
     const startLearningCard = document.getElementById('startLearningCard');
     const searchInput = document.getElementById('courseSearch');
     const clearSearchButton = document.getElementById('clearSearch');
-    const courseCards = Array.from(document.querySelectorAll('.course-card'));
     const emptyState = document.getElementById('emptyState');
+    const courseGrid = document.getElementById('courseGrid');
+    const courseDetail = document.getElementById('courseDetail');
+    const subcategoryList = document.getElementById('subcategoryList');
+    const courseDatabaseUrl = 'https://tit-groups-default-rtdb.firebaseio.com/advance/courses.json';
+    let studentCourses = {};
+    let selectedCourseKey = '';
+    let studentCoursesLoading = false;
 
     const navHome = document.getElementById('navHome');
     const navCommunity = document.getElementById('navCommunity');
@@ -970,6 +952,7 @@
       } else if (viewName === 'courses') {
         document.title = 'BT Courses';
         updateNavHighlight('home');
+        loadStudentCourses();
       } else if (viewName === 'community') {
         document.title = 'Community | TIT Advance';
         updateNavHighlight('community');
@@ -1014,15 +997,138 @@
     }
 
     function filterCourses() {
+      renderStudentCourses();
+    }
+
+    function createCourseArt() {
+      const art = document.createElement('span');
+      art.className = 'course-art';
+      art.setAttribute('aria-hidden', 'true');
+      const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      icon.setAttribute('viewBox', '0 0 100 100');
+      icon.setAttribute('fill', 'none');
+      icon.setAttribute('aria-hidden', 'true');
+      const book = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      book.setAttribute('d', 'M24 28c12-4 20-2 26 4v44c-7-6-16-8-26-4V28Zm52 0c-12-4-20-2-26 4v44c7-6 16-8 26-4V28Z');
+      book.setAttribute('fill', '#3767D8');
+      const center = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      center.setAttribute('d', 'M50 32v44');
+      center.setAttribute('stroke', '#F6A04A');
+      center.setAttribute('stroke-width', '4');
+      center.setAttribute('stroke-linecap', 'round');
+      icon.append(book, center);
+      art.append(icon);
+      return art;
+    }
+
+    function renderStudentCourses() {
       const query = searchInput.value.trim().toUpperCase();
+      courseGrid.replaceChildren();
+      const entries = Object.entries(studentCourses).filter(([, course]) => course && typeof course === 'object');
+      entries.sort(([, a], [, b]) => String(a.code || '').localeCompare(String(b.code || '')));
       let visibleCount = 0;
-      courseCards.forEach((card) => {
-        const matches = card.dataset.courseCode.includes(query);
-        card.hidden = !matches;
-        if (matches) visibleCount += 1;
+      entries.forEach(([key, course]) => {
+        const code = String(course.code || key.toUpperCase());
+        const title = String(course.title || '');
+        if (!`${code} ${title}`.toUpperCase().includes(query)) return;
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'course-card';
+        card.dataset.courseKey = key;
+        card.setAttribute('aria-label', `${code}${title ? `: ${title}` : ''}`);
+        card.append(createCourseArt());
+        const codeLabel = document.createElement('span');
+        codeLabel.className = 'course-code';
+        codeLabel.textContent = code;
+        card.append(codeLabel);
+        if (title) {
+          const titleLabel = document.createElement('span');
+          titleLabel.className = 'text-xs text-app-secondary';
+          titleLabel.textContent = title;
+          card.append(titleLabel);
+        }
+        courseGrid.append(card);
+        visibleCount += 1;
       });
       clearSearchButton.hidden = query.length === 0;
-      emptyState.hidden = visibleCount !== 0;
+      renderCourseDetail();
+      courseGrid.hidden = !courseDetail.hidden;
+      emptyState.textContent = query ? 'No courses found.' : 'No courses are available yet.';
+      emptyState.hidden = visibleCount !== 0 || !courseDetail.hidden;
+      if (!studentCoursesLoading && !visibleCount && emptyState.dataset.loadError) {
+        emptyState.textContent = emptyState.dataset.loadError;
+        emptyState.hidden = false;
+      }
+    }
+
+    function renderCourseDetail() {
+      const course = studentCourses[selectedCourseKey];
+      if (!course) {
+        selectedCourseKey = '';
+        courseDetail.hidden = true;
+        courseGrid.hidden = false;
+        return;
+      }
+      courseDetail.hidden = false;
+      courseGrid.hidden = true;
+      const courseHeading = document.getElementById('selectedCourseTitle');
+      courseHeading.textContent = `${course.code || selectedCourseKey.toUpperCase()}${course.title ? ` — ${course.title}` : ''}`;
+      subcategoryList.replaceChildren();
+      const subcategories = Object.entries(course.subcategories || {}).filter(([, item]) => item && typeof item === 'object');
+      subcategories.sort(([, a], [, b]) => String(a.title || '').localeCompare(String(b.title || '')));
+      subcategories.forEach(([key, item]) => {
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'course-card';
+        card.dataset.subcategoryKey = key;
+        card.append(createCourseArt());
+        const title = document.createElement('span');
+        title.className = 'course-code';
+        title.textContent = item.title || key;
+        card.append(title);
+        subcategoryList.append(card);
+      });
+      const subcategoryEmpty = document.getElementById('subcategoryEmptyState');
+      subcategoryEmpty.hidden = subcategories.length > 0;
+    }
+
+    function openCourseDocument(subcategory) {
+      try {
+        const rawUrl = subcategory.url;
+        const url = new URL(rawUrl);
+        if (!['http:', 'https:'].includes(url.protocol)) throw new Error('Unsupported document URL.');
+        pdfViewerFrame.src = rawUrl;
+        pdfViewerFrame.title = subcategory.title || 'PDF document viewer';
+        pdfViewerModal.showModal();
+      } catch (error) {
+        emptyState.textContent = 'This PDF / ICC Embed link is invalid. Please contact support.';
+        emptyState.hidden = false;
+      }
+    }
+
+    async function loadStudentCourses() {
+      if (studentCoursesLoading || document.visibilityState === 'hidden') return;
+      studentCoursesLoading = true;
+      emptyState.dataset.loadError = '';
+      if (!Object.keys(studentCourses).length && courseDetail.hidden) {
+        emptyState.textContent = 'Loading courses…';
+        emptyState.hidden = false;
+      }
+      try {
+        const response = await fetch(courseDatabaseUrl, { headers: { Accept: 'application/json' } });
+        if (!response.ok) throw new Error(`Database request failed (${response.status}).`);
+        const payload = await response.json();
+        studentCourses = payload && typeof payload === 'object' && !Array.isArray(payload) ? payload : {};
+        emptyState.dataset.loadError = '';
+        renderStudentCourses();
+      } catch (error) {
+        emptyState.dataset.loadError = 'Unable to load courses. Check your connection and try again.';
+        emptyState.textContent = emptyState.dataset.loadError;
+        emptyState.hidden = false;
+        console.error('Unable to load course data from Firebase Realtime Database.', error);
+      } finally {
+        studentCoursesLoading = false;
+      }
     }
 
     // Navigation Tab Events
@@ -1129,23 +1235,50 @@
       });
     }
 
-    courseCards.forEach((card) => {
-      card.addEventListener('click', () => {
-        courseCards.forEach((item) => item.setAttribute('aria-pressed', String(item === card)));
-        courseScreen.dataset.selectedCourse = card.dataset.courseCode;
-        if (card.dataset.courseCode === 'BT-101') {
-          pdfViewerContainer.style.display = '';
-          pdfViewerFrame.src = pdfViewerUrl;
-          pdfViewerModal.showModal();
-        }
-      });
+    courseGrid.addEventListener('click', (event) => {
+      const courseCard = event.target.closest('[data-course-key]');
+      if (courseCard) {
+        selectedCourseKey = courseCard.dataset.courseKey;
+        renderStudentCourses();
+      }
+    });
+
+    subcategoryList.addEventListener('click', (event) => {
+      const subcategoryCard = event.target.closest('[data-subcategory-key]');
+      if (!subcategoryCard) return;
+      const course = studentCourses[selectedCourseKey];
+      const subcategory = course && course.subcategories && course.subcategories[subcategoryCard.dataset.subcategoryKey];
+      if (subcategory) openCourseDocument(subcategory);
+    });
+
+    document.getElementById('courseDetailBack').addEventListener('click', () => {
+      selectedCourseKey = '';
+      renderStudentCourses();
+    });
+
+    function closeCourseDocument() {
+      if (pdfViewerModal.open) pdfViewerModal.close();
+      pdfViewerFrame.src = 'about:blank';
+    }
+
+    document.getElementById('pdf-viewer-close').addEventListener('click', closeCourseDocument);
+    pdfViewerModal.addEventListener('cancel', () => {
+      pdfViewerFrame.src = 'about:blank';
     });
 
     window.addEventListener('message', (event) => {
-      if (event.origin !== 'https://b.indiacybercafe.com' ||
+      if (!pdfViewerModal.open || event.source !== pdfViewerFrame.contentWindow ||
+          event.origin !== new URL(pdfViewerFrame.src).origin ||
           !event.data || event.data.type !== 'icc-pdf-viewer-close') return;
 
-      pdfViewerModal.close();
+      closeCourseDocument();
+    });
+
+    window.setInterval(() => {
+      if (window.location.hash === '#courses') loadStudentCourses();
+    }, 15000);
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && window.location.hash === '#courses') loadStudentCourses();
     });
 
     // Init screen from hash
