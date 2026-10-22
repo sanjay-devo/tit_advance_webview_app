@@ -434,14 +434,33 @@
       font-size: 15px;
       text-align: center;
     }
+    .utility-empty {
+      display: grid;
+      min-height: 144px;
+      place-items: center;
+      padding: 24px;
+      border: 1px dashed #D9DDE6;
+      border-radius: 26px;
+      background: #FFFFFF;
+      line-height: 1.5;
+    }
     .course-detail[hidden] {
       display: none;
     }
     #startLearningCard:focus-visible,
+    #quizCard:focus-visible,
+    #bookmarksCard:focus-visible,
+    #recentlyViewedCard:focus-visible,
     .course-screen button:focus-visible,
     .course-screen input:focus-visible {
       outline: 3px solid rgba(55, 103, 216, 0.45);
       outline-offset: 3px;
+    }
+    #startLearningCard,
+    #quizCard,
+    #bookmarksCard,
+    #recentlyViewedCard {
+      touch-action: manipulation;
     }
     .course-screen .course-search input:focus-visible {
       outline: none;
@@ -654,7 +673,7 @@
         </div>
 
         <!-- Card 2: TA Quiz (card.indigo #5F6FE0) -->
-        <div class="relative overflow-hidden rounded-card bg-card-indigo p-4 flex flex-col justify-between shadow-card transition-all duration-200 active:scale-[0.98] cursor-pointer min-h-[220px]">
+        <div id="quizCard" role="button" tabindex="0" aria-label="TA Quiz" class="relative overflow-hidden rounded-card bg-card-indigo p-4 flex flex-col justify-between shadow-card transition-all duration-200 active:scale-[0.98] cursor-pointer min-h-[220px]">
           <!-- Decorative circle in lower corner -->
           <div class="absolute -bottom-7 -right-7 w-28 h-28 rounded-full bg-card-indigoDeco pointer-events-none"></div>
 
@@ -687,7 +706,7 @@
         </div>
 
         <!-- Card 3: Bookmarks (card.mint #C4EBF0) -->
-        <div class="relative overflow-hidden rounded-card bg-card-mint p-4 flex flex-col justify-between shadow-card transition-all duration-200 active:scale-[0.98] cursor-pointer min-h-[220px]">
+        <div id="bookmarksCard" role="button" tabindex="0" aria-label="Bookmarks" class="relative overflow-hidden rounded-card bg-card-mint p-4 flex flex-col justify-between shadow-card transition-all duration-200 active:scale-[0.98] cursor-pointer min-h-[220px]">
           <!-- Decorative circle in lower corner -->
           <div class="absolute -bottom-7 -right-7 w-28 h-28 rounded-full bg-card-mintDeco pointer-events-none"></div>
 
@@ -718,7 +737,7 @@
         </div>
 
         <!-- Card 4: Recently Viewed (card.sky #CEE7FD) -->
-        <div class="relative overflow-hidden rounded-card bg-card-sky p-4 flex flex-col justify-between shadow-card transition-all duration-200 active:scale-[0.98] cursor-pointer min-h-[220px]">
+        <div id="recentlyViewedCard" role="button" tabindex="0" aria-label="Recently Viewed" class="relative overflow-hidden rounded-card bg-card-sky p-4 flex flex-col justify-between shadow-card transition-all duration-200 active:scale-[0.98] cursor-pointer min-h-[220px]">
           <!-- Decorative circle in lower corner -->
           <div class="absolute -bottom-7 -right-7 w-28 h-28 rounded-full bg-card-skyDeco pointer-events-none"></div>
 
@@ -796,6 +815,49 @@
       ></iframe>
     </div>
   </dialog>
+
+  <section id="quizScreen" class="screen course-screen" aria-labelledby="quizTitle" hidden>
+    <header class="course-header">
+      <button class="course-back" id="quizBack" type="button" aria-label="Go back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M15 18 9 12l6-6"></path>
+        </svg>
+      </button>
+      <h1 class="course-title" id="quizTitle">TA Quiz</h1>
+    </header>
+    <main class="course-content pt-7 max-w-[760px] pb-36">
+      <p class="course-empty utility-empty" id="quizEmptyState" role="status">No questions available yet.</p>
+    </main>
+  </section>
+
+  <section id="bookmarksScreen" class="screen course-screen" aria-labelledby="bookmarksTitle" hidden>
+    <header class="course-header">
+      <button class="course-back" id="bookmarksBack" type="button" aria-label="Go back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M15 18 9 12l6-6"></path>
+        </svg>
+      </button>
+      <h1 class="course-title" id="bookmarksTitle">Bookmarks</h1>
+    </header>
+    <main class="course-content pt-7 max-w-[760px] pb-36">
+      <p class="course-empty utility-empty" id="bookmarksEmptyState" role="status">No bookmarks yet.</p>
+    </main>
+  </section>
+
+  <section id="recentlyViewedScreen" class="screen course-screen" aria-labelledby="recentlyViewedTitle" hidden>
+    <header class="course-header">
+      <button class="course-back" id="recentlyViewedBack" type="button" aria-label="Go back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M15 18 9 12l6-6"></path>
+        </svg>
+      </button>
+      <h1 class="course-title" id="recentlyViewedTitle">Recently Viewed</h1>
+    </header>
+    <main class="course-content pt-7 max-w-[760px] pb-36">
+      <div id="recentlyViewedList" class="course-grid" aria-label="Recently viewed items"></div>
+      <p class="course-empty utility-empty" id="recentlyViewedEmptyState" role="status" hidden>No courses or resources viewed yet. Open a course or PDF to see it here.</p>
+    </main>
+  </section>
 
   <section id="notificationsScreen" class="screen course-screen" aria-labelledby="notificationsTitle" hidden>
     <header class="course-header">
@@ -1029,6 +1091,9 @@
     const courseScreen = document.getElementById('courseScreen');
     const pdfViewerModal = document.getElementById('pdf-viewer-modal');
     const pdfViewerFrame = document.getElementById('pdf-viewer-frame');
+    const quizScreen = document.getElementById('quizScreen');
+    const bookmarksScreen = document.getElementById('bookmarksScreen');
+    const recentlyViewedScreen = document.getElementById('recentlyViewedScreen');
     const communityScreen = document.getElementById('communityScreen');
     const settingsScreen = document.getElementById('settingsScreen');
     const notificationsScreen = document.getElementById('notificationsScreen');
@@ -1046,7 +1111,10 @@
     const courseDetail = document.getElementById('courseDetail');
     const subcategoryList = document.getElementById('subcategoryList');
     const courseDatabaseUrl = 'https://tit-groups-default-rtdb.firebaseio.com/advance/courses.json';
+    const RECENTLY_VIEWED_KEY = 'titAdvanceRecentlyViewed';
+    const RECENTLY_VIEWED_LIMIT = 50;
     let studentCourses = {};
+    let recentlyViewedItems = loadRecentlyViewed();
     let selectedCourseKey = '';
     let studentCoursesLoading = false;
     let sharedNotifications = {};
@@ -1065,6 +1133,64 @@
     const activeNavClass = 'w-full max-w-[102px] py-2 px-2 rounded-full flex flex-col items-center justify-center text-app-orange bg-app-orangeLight transition-all duration-200 active:scale-95';
     const inactiveNavClass = 'w-full max-w-[102px] py-2 px-2 rounded-full flex flex-col items-center justify-center text-app-secondary hover:text-app-primary hover:bg-app-orangeLight/35 transition-all duration-200 active:scale-95';
     let lastAppHistoryState = null;
+
+    function loadRecentlyViewed() {
+      let stored;
+      try {
+        stored = JSON.parse(localStorage.getItem(RECENTLY_VIEWED_KEY) || '[]');
+      } catch (error) {
+        console.warn('Unable to restore recently viewed items from local storage.', error);
+        return [];
+      }
+      if (!Array.isArray(stored)) return [];
+      const uniqueItems = new Map();
+      for (const item of stored) {
+        if (!item || typeof item !== 'object' ||
+            (item.type !== 'course' && item.type !== 'resource') ||
+            typeof item.id !== 'string' || !item.id ||
+            !Number.isFinite(item.lastViewedAt) || item.lastViewedAt <= 0) continue;
+        if (item.type === 'course' && (typeof item.courseKey !== 'string' || !item.courseKey)) continue;
+        if (item.type === 'resource') {
+          if (typeof item.url !== 'string' || !item.url) continue;
+          try {
+            const url = new URL(item.url);
+            if (!['http:', 'https:'].includes(url.protocol)) continue;
+          } catch {
+            continue;
+          }
+        }
+        const existing = uniqueItems.get(item.id);
+        if (!existing || existing.lastViewedAt < item.lastViewedAt) uniqueItems.set(item.id, item);
+      }
+      const normalized = [...uniqueItems.values()]
+        .sort((a, b) => b.lastViewedAt - a.lastViewedAt)
+        .slice(0, RECENTLY_VIEWED_LIMIT);
+      if (JSON.stringify(stored) !== JSON.stringify(normalized)) {
+        try {
+          localStorage.setItem(RECENTLY_VIEWED_KEY, JSON.stringify(normalized));
+        } catch (error) {
+          console.warn('Unable to save normalized recently viewed history.', error);
+        }
+      }
+      return normalized;
+    }
+
+    function saveRecentlyViewed() {
+      try {
+        localStorage.setItem(RECENTLY_VIEWED_KEY, JSON.stringify(recentlyViewedItems));
+      } catch (error) {
+        console.warn('Unable to save recently viewed items to local storage.', error);
+      }
+    }
+
+    function addRecentlyViewed(item) {
+      recentlyViewedItems = [
+        { ...item, lastViewedAt: Date.now() },
+        ...recentlyViewedItems.filter((entry) => entry.id !== item.id)
+      ].slice(0, RECENTLY_VIEWED_LIMIT);
+      saveRecentlyViewed();
+      if (recentlyViewedScreen && !recentlyViewedScreen.hidden) renderRecentlyViewed();
+    }
 
     function setTabState(button, isActive) {
       if (!button) return;
@@ -1086,6 +1212,9 @@
     function renderView(viewName) {
       homeScreen.hidden = (viewName !== 'home');
       courseScreen.hidden = (viewName !== 'courses');
+      if (quizScreen) quizScreen.hidden = (viewName !== 'quiz');
+      if (bookmarksScreen) bookmarksScreen.hidden = (viewName !== 'bookmarks');
+      if (recentlyViewedScreen) recentlyViewedScreen.hidden = (viewName !== 'recently-viewed');
       if (notificationsScreen) notificationsScreen.hidden = (viewName !== 'notifications');
       if (communityScreen) communityScreen.hidden = (viewName !== 'community');
       if (settingsScreen) settingsScreen.hidden = (viewName !== 'settings');
@@ -1101,6 +1230,16 @@
         document.title = 'BT Courses';
         updateNavHighlight('home');
         loadStudentCourses();
+      } else if (viewName === 'quiz') {
+        document.title = 'TA Quiz | TIT Advance';
+        updateNavHighlight('home');
+      } else if (viewName === 'bookmarks') {
+        document.title = 'Bookmarks | TIT Advance';
+        updateNavHighlight('home');
+      } else if (viewName === 'recently-viewed') {
+        document.title = 'Recently Viewed | TIT Advance';
+        updateNavHighlight('home');
+        renderRecentlyViewed();
       } else if (viewName === 'community') {
         document.title = 'Community | TIT Advance';
         updateNavHighlight('community');
@@ -1131,6 +1270,31 @@
       switchView('courses');
     }
 
+    function openUtilityScreen(viewName) {
+      selectedCourseKey = '';
+      const state = { appScreen: true, screen: viewName, courseKey: '', layer: 'screen', root: false };
+      history.pushState(state, '', `#${viewName}`);
+      lastAppHistoryState = state;
+      renderStudentCourses();
+      renderView(viewName);
+    }
+
+    function openStudentCourse(courseKey) {
+      selectedCourseKey = courseKey;
+      const state = {
+        appScreen: true,
+        screen: 'courses',
+        courseKey,
+        layer: 'course',
+        returnScreen: history.state && history.state.screen || 'home',
+        root: false
+      };
+      history.pushState(state, '', '#courses');
+      lastAppHistoryState = state;
+      renderView('courses');
+      renderStudentCourses();
+    }
+
     function openNotifications() {
       selectedCourseKey = '';
       const state = {
@@ -1155,6 +1319,12 @@
       const hash = window.location.hash;
       if (hash === '#courses') {
         switchView('courses', false);
+      } else if (hash === '#quiz' || hash === '#bookmarks' || hash === '#recently-viewed') {
+        const targetScreen = hash.slice(1);
+        const homeState = { appScreen: true, screen: 'home', courseKey: '', layer: 'screen', root: true };
+        history.replaceState(homeState, '', window.location.pathname);
+        lastAppHistoryState = homeState;
+        openUtilityScreen(targetScreen);
       } else if (hash === '#community') {
         switchView('community', false);
       } else if (hash === '#settings') {
@@ -1298,6 +1468,64 @@
       subcategoryEmpty.hidden = subcategories.length > 0;
     }
 
+    function renderRecentlyViewed() {
+      const list = document.getElementById('recentlyViewedList');
+      const empty = document.getElementById('recentlyViewedEmptyState');
+      if (!list || !empty) return;
+      list.replaceChildren();
+      empty.hidden = recentlyViewedItems.length > 0;
+      for (const item of recentlyViewedItems) {
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'course-card';
+        card.setAttribute('aria-label', `${item.type === 'resource' ? 'Open resource' : 'Open course'}: ${item.title || item.code || 'Recently viewed item'}`);
+        card.append(createCourseArt());
+
+        const title = document.createElement('span');
+        title.className = 'course-code';
+        title.textContent = item.title || item.code || 'Recently viewed item';
+        card.append(title);
+
+        const detail = document.createElement('span');
+        detail.className = 'text-xs text-app-secondary';
+        detail.textContent = item.type === 'resource'
+          ? `${item.courseCode || 'Course'}${item.courseTitle ? ` · ${item.courseTitle}` : ''}`
+          : item.courseTitle || 'Course';
+        card.append(detail);
+
+        const viewedAt = document.createElement('span');
+        viewedAt.className = 'text-xs text-app-muted';
+        viewedAt.textContent = `Viewed ${new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(item.lastViewedAt))}`;
+        card.append(viewedAt);
+
+        card.addEventListener('click', async () => {
+          if (item.type === 'resource') {
+            selectedCourseKey = item.courseKey || '';
+            openCourseDocument({ url: item.url, title: item.title }, item.courseKey || '', item.subcategoryKey || '');
+            return;
+          }
+          if (!Object.prototype.hasOwnProperty.call(studentCourses, item.courseKey)) {
+            await loadStudentCourses();
+          }
+          if (!Object.prototype.hasOwnProperty.call(studentCourses, item.courseKey)) {
+            showShareFeedback('This course is no longer available. Refresh the course list and try again.');
+            return;
+          }
+          const course = studentCourses[item.courseKey];
+          addRecentlyViewed({
+            id: `course:${item.courseKey}`,
+            type: 'course',
+            courseKey: item.courseKey,
+            code: course.code || item.courseKey.toUpperCase(),
+            title: course.code || item.courseKey.toUpperCase(),
+            courseTitle: course.title || ''
+          });
+          openStudentCourse(item.courseKey);
+        });
+        list.append(card);
+      }
+    }
+
     function visibleNotifications() {
       return Object.entries(sharedNotifications)
         .filter(([id, item]) => item && typeof item === 'object' && item.active !== false &&
@@ -1414,24 +1642,41 @@
       window.dispatchEvent(new CustomEvent('tit-notification-dismiss-request', { detail: { ids, all: true } }));
     });
 
-    function openCourseDocument(subcategory) {
+    function openCourseDocument(subcategory, courseKey = selectedCourseKey, subcategoryKey = '') {
       try {
         const rawUrl = subcategory.url;
         const url = new URL(rawUrl);
         if (!['http:', 'https:'].includes(url.protocol)) throw new Error('Unsupported document URL.');
+        const course = studentCourses[courseKey] || {};
+        const resourceTitle = subcategory.title || 'PDF document viewer';
+        const returnState = history.state && history.state.appScreen
+          ? history.state
+          : { appScreen: true, screen: 'home', courseKey: '', layer: 'screen', root: true };
         const state = {
           appScreen: true,
           screen: 'courses',
-          courseKey: selectedCourseKey,
+          courseKey,
           layer: 'viewer',
           viewerUrl: rawUrl,
-          viewerTitle: subcategory.title || 'PDF document viewer',
+          viewerTitle: resourceTitle,
+          viewerReturnState: returnState,
           root: false
         };
+        selectedCourseKey = courseKey;
         history.pushState(state, '', '#courses');
         lastAppHistoryState = state;
+        addRecentlyViewed({
+          id: `resource:${courseKey}:${subcategoryKey || rawUrl}`,
+          type: 'resource',
+          title: resourceTitle,
+          url: rawUrl,
+          courseKey,
+          subcategoryKey,
+          courseCode: course.code || courseKey.toUpperCase(),
+          courseTitle: course.title || ''
+        });
         pdfViewerFrame.src = rawUrl;
-        pdfViewerFrame.title = state.viewerTitle;
+        pdfViewerFrame.title = resourceTitle;
         pdfViewerModal.showModal();
       } catch (error) {
         emptyState.textContent = 'This PDF / ICC Embed link is invalid. Please contact support.';
@@ -1538,6 +1783,10 @@
       if (pdfViewerModal.open) {
         closeCourseDocument();
       } else if (selectedCourseKey) {
+        if (history.state && history.state.returnScreen === 'recently-viewed') {
+          history.back();
+          return;
+        }
         selectedCourseKey = '';
         const state = {
           appScreen: true,
@@ -1560,14 +1809,33 @@
     const settingsBackBtn = document.getElementById('settingsBack');
     if (settingsBackBtn) settingsBackBtn.addEventListener('click', returnHome);
 
-    // Course Interactions
-    startLearningCard.addEventListener('click', openCourses);
-    startLearningCard.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        openCourses();
+    function backFromUtilityScreen(screenName) {
+      if (history.state && history.state.appScreen && history.state.screen === screenName && history.length > 1) {
+        history.back();
+      } else {
+        returnHome();
       }
-    });
+    }
+
+    document.getElementById('quizBack').addEventListener('click', () => backFromUtilityScreen('quiz'));
+    document.getElementById('bookmarksBack').addEventListener('click', () => backFromUtilityScreen('bookmarks'));
+    document.getElementById('recentlyViewedBack').addEventListener('click', () => backFromUtilityScreen('recently-viewed'));
+
+    // Course Interactions
+    function bindHomeCard(card, action) {
+      card.addEventListener('click', action);
+      card.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          action();
+        }
+      });
+    }
+
+    bindHomeCard(startLearningCard, openCourses);
+    bindHomeCard(document.getElementById('quizCard'), () => openUtilityScreen('quiz'));
+    bindHomeCard(document.getElementById('bookmarksCard'), () => openUtilityScreen('bookmarks'));
+    bindHomeCard(document.getElementById('recentlyViewedCard'), () => openUtilityScreen('recently-viewed'));
 
     window.addEventListener('popstate', (event) => restoreAppHistoryState(event.state));
     window.addEventListener('hashchange', () => {
@@ -1591,17 +1859,17 @@
     courseGrid.addEventListener('click', (event) => {
       const courseCard = event.target.closest('[data-course-key]');
       if (courseCard) {
-        selectedCourseKey = courseCard.dataset.courseKey;
-        const state = {
-          appScreen: true,
-          screen: 'courses',
-          courseKey: selectedCourseKey,
-          layer: 'course',
-          root: false
-        };
-        history.pushState(state, '', '#courses');
-        lastAppHistoryState = state;
-        renderStudentCourses();
+        const key = courseCard.dataset.courseKey;
+        const course = studentCourses[key] || {};
+        addRecentlyViewed({
+          id: `course:${key}`,
+          type: 'course',
+          courseKey: key,
+          code: course.code || key.toUpperCase(),
+          title: course.code || key.toUpperCase(),
+          courseTitle: course.title || ''
+        });
+        openStudentCourse(key);
       }
     });
 
@@ -1610,20 +1878,22 @@
       if (!subcategoryCard) return;
       const course = studentCourses[selectedCourseKey];
       const subcategory = course && course.subcategories && course.subcategories[subcategoryCard.dataset.subcategoryKey];
-      if (subcategory) openCourseDocument(subcategory);
+      if (subcategory) openCourseDocument(subcategory, selectedCourseKey, subcategoryCard.dataset.subcategoryKey);
     });
 
     function closeCourseDocument() {
       if (history.state && history.state.appScreen && history.state.layer === 'viewer') {
-        const courseState = {
+        const returnState = history.state.viewerReturnState || {
           appScreen: true,
           screen: 'courses',
           courseKey: selectedCourseKey,
           layer: 'course',
           root: false
         };
-        history.replaceState(courseState, '', '#courses');
-        lastAppHistoryState = courseState;
+        const returnHash = returnState.screen === 'home' ? '' : `#${returnState.screen}`;
+        history.replaceState(returnState, '', returnHash || window.location.pathname);
+        lastAppHistoryState = returnState;
+        selectedCourseKey = returnState.courseKey || '';
       }
       if (pdfViewerModal.open) pdfViewerModal.close();
       pdfViewerFrame.src = 'about:blank';
