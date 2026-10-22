@@ -311,6 +311,34 @@
       outline: none;
       outline-offset: 0;
     }
+    .pdf-viewer-modal {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      max-width: none;
+      max-height: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      border: 0;
+      background: transparent;
+    }
+    @supports (height: 100dvh) {
+      .pdf-viewer-modal,
+      #pdf-viewer-container {
+        height: 100dvh;
+      }
+    }
+    #pdf-viewer-container,
+    #pdf-viewer-frame {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    .pdf-viewer-modal::backdrop {
+      background: rgba(23, 27, 43, 0.72);
+    }
     @media (max-width: 699px) {
       #communityScreen main > div > a {
         gap: 12px;
@@ -660,6 +688,18 @@
     </main>
   </section>
 
+  <dialog id="pdf-viewer-modal" class="pdf-viewer-modal" aria-label="Income/Aay Certificate Form">
+    <div id="pdf-viewer-container">
+      <iframe
+        id="pdf-viewer-frame"
+        src="https://b.indiacybercafe.com/forms-documents/mp-government-forms/incomeaay-certificate-form?from=%2Fforms-documents&amp;embed=1"
+        title="Income/Aay Certificate Form PDF Viewer"
+        style="border: none;"
+        allow="fullscreen"
+      ></iframe>
+    </div>
+  </dialog>
+
   <!-- Community Screen -->
   <section id="communityScreen" class="screen course-screen" aria-labelledby="communityTitle" hidden>
     <header class="course-header">
@@ -868,6 +908,8 @@
   <script>
     const homeScreen = document.getElementById('homeScreen');
     const courseScreen = document.getElementById('courseScreen');
+    const pdfViewerModal = document.getElementById('pdf-viewer-modal');
+    const pdfViewerContainer = document.getElementById('pdf-viewer-container');
     const communityScreen = document.getElementById('communityScreen');
     const settingsScreen = document.getElementById('settingsScreen');
     const startLearningCard = document.getElementById('startLearningCard');
@@ -1075,7 +1117,19 @@
       card.addEventListener('click', () => {
         courseCards.forEach((item) => item.setAttribute('aria-pressed', String(item === card)));
         courseScreen.dataset.selectedCourse = card.dataset.courseCode;
+        if (card.dataset.courseCode === 'BT-101') {
+          pdfViewerContainer.style.display = '';
+          pdfViewerModal.showModal();
+        }
       });
+    });
+
+    window.addEventListener('message', (event) => {
+      if (event.origin !== 'https://b.indiacybercafe.com' ||
+          !event.data || event.data.type !== 'icc-pdf-viewer-close') return;
+
+      pdfViewerContainer.style.display = 'none';
+      pdfViewerModal.close();
     });
 
     const clearDataBtn = document.getElementById('clearDataBtn');
