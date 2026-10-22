@@ -137,7 +137,7 @@
     }
     .course-back {
       position: absolute;
-      z-index: 1;
+      z-index: 3;
       top: calc(env(safe-area-inset-top, 0px) + 20px);
       left: clamp(20px, 5vw, 36px);
       display: grid;
@@ -150,10 +150,15 @@
       color: #171B2B;
       box-shadow: 0 8px 24px rgba(36, 48, 68, 0.08);
       cursor: pointer;
+      pointer-events: auto;
+      touch-action: manipulation;
+      -webkit-appearance: none;
+      appearance: none;
     }
     .course-back svg {
       width: 22px;
       height: 22px;
+      pointer-events: none;
     }
     .course-title {
       position: relative;
@@ -360,6 +365,10 @@
       background: rgba(23, 27, 43, 0.72);
     }
     @media (max-width: 699px) {
+      .course-back {
+        width: 56px;
+        height: 56px;
+      }
       #communityScreen main > div > a {
         gap: 12px;
         padding: 12px 14px;
