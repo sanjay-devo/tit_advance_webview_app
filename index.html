@@ -190,12 +190,22 @@
       width: 48px;
       height: 48px;
       place-items: center;
-      border: 1px solid rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(217, 47, 50, 0.16);
       border-radius: 16px;
-      background: rgba(255, 255, 255, 0.72);
-      color: #626B7D;
+      background: rgba(255, 255, 255, 0.82);
+      color: #D92F32;
       cursor: pointer;
       touch-action: manipulation;
+      transition: background-color 150ms ease, border-color 150ms ease, transform 150ms ease;
+    }
+    .notifications-dismiss-all:hover:not(:disabled),
+    .notification-dismiss:hover:not(:disabled) {
+      border-color: rgba(217, 47, 50, 0.32);
+      background: #FFF0F0;
+    }
+    .notifications-dismiss-all:active:not(:disabled),
+    .notification-dismiss:active:not(:disabled) {
+      transform: scale(0.94);
     }
     .notifications-dismiss-all:disabled {
       cursor: not-allowed;
@@ -272,12 +282,13 @@
       width: 48px;
       height: 48px;
       place-items: center;
-      border: 1px solid #E4E5EA;
+      border: 1px solid rgba(217, 47, 50, 0.18);
       border-radius: 16px;
       background: #FFFFFF;
-      color: #626B7D;
+      color: #D92F32;
       cursor: pointer;
       touch-action: manipulation;
+      transition: background-color 150ms ease, border-color 150ms ease, transform 150ms ease;
     }
     .notification-dismiss svg {
       width: 20px;
@@ -867,12 +878,12 @@
         </svg>
       </button>
       <h1 class="course-title" id="notificationsTitle">Notifications</h1>
-      <button class="notifications-dismiss-all" id="notificationsDismissAll" type="button" aria-label="Dismiss all notifications" title="Dismiss all notifications">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M3 6h18"></path>
-          <path d="m8 6 1 14h6l1-14"></path>
-          <path d="M10 6V4h4v2"></path>
-          <path d="M10 10v6M14 10v6"></path>
+      <button class="notifications-dismiss-all" id="notificationsDismissAll" type="button" aria-label="Delete all notifications from this device" title="Delete all notifications from this device">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 7h16"></path>
+          <path d="M10 11v6M14 11v6"></path>
+          <path d="m5 7 1 14h12l1-14"></path>
+          <path d="M9 7V4h6v3"></path>
         </svg>
       </button>
     </header>
@@ -1586,10 +1597,10 @@
         const dismiss = document.createElement('button');
         dismiss.type = 'button';
         dismiss.className = 'notification-dismiss';
-        dismiss.setAttribute('aria-label', `Dismiss ${String(item.title || 'notification')}`);
-        dismiss.title = 'Dismiss notification';
+        dismiss.setAttribute('aria-label', `Delete ${String(item.title || 'notification')} from this device`);
+        dismiss.title = 'Delete notification from this device';
         dismiss.disabled = pendingNotificationActions.has('*') || pendingNotificationActions.has(id);
-        dismiss.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"></path><path d="m8 6 1 14h6l1-14"></path><path d="M10 6V4h4v2"></path><path d="M10 10v6M14 10v6"></path></svg>';
+        dismiss.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16"></path><path d="M10 11v6M14 11v6"></path><path d="m5 7 1 14h12l1-14"></path><path d="M9 7V4h6v3"></path></svg>';
         dismiss.addEventListener('click', () => {
           notificationActionError = '';
           pendingNotificationActions.add(id);
@@ -1928,18 +1939,9 @@
   <script type="module">
     import { getApp, getApps, initializeApp } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js';
     import {
-      browserLocalPersistence,
-      getAuth,
-      onAuthStateChanged,
-      setPersistence,
-      signInAnonymously
-    } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
-    import {
       getDatabase,
       onValue,
-      ref,
-      serverTimestamp,
-      update
+      ref
     } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js';
 
     const firebaseConfig = {
@@ -1952,22 +1954,48 @@
       appId: '1:658719825802:web:2bd8b465073617db1bf273'
     };
     const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
-    const auth = getAuth(app);
     const database = getDatabase(app);
-    let currentUid = '';
+    const notificationStateKey = 'titAdvanceNotificationUserState';
     let notifications = {};
     let userStates = {};
     let feedLoaded = false;
-    let userStatesLoaded = false;
+    let userStatesLoaded = true;
     let connected = null;
     let feedError = '';
     let userError = '';
     let unsubscribeFeed = null;
-    let unsubscribeUserStates = null;
     let unsubscribeConnection = null;
-    let anonymousSignInPending = false;
-    let readUpdatePending = false;
-    const dismissUpdatesPending = new Set();
+
+    function loadUserStates() {
+      try {
+        const stored = JSON.parse(localStorage.getItem(notificationStateKey) || '{}');
+        if (!stored || typeof stored !== 'object' || Array.isArray(stored)) return {};
+        return Object.fromEntries(Object.entries(stored)
+          .filter(([id, state]) => id && state && typeof state === 'object' && !Array.isArray(state))
+          .map(([id, state]) => [id, {
+            read: state.read === true,
+            readAt: Number.isFinite(state.readAt) ? state.readAt : null,
+            dismissed: state.dismissed === true,
+            dismissedAt: Number.isFinite(state.dismissedAt) ? state.dismissedAt : null
+          }]));
+      } catch (error) {
+        console.warn('Unable to restore notification settings from local storage.', error);
+        return {};
+      }
+    }
+
+    function saveUserStates() {
+      try {
+        localStorage.setItem(notificationStateKey, JSON.stringify(userStates));
+        return true;
+      } catch (error) {
+        console.error('Unable to save notification settings to local storage.', error);
+        userError = 'Unable to save notification settings on this device.';
+        return false;
+      }
+    }
+
+    userStates = loadUserStates();
 
     function publishState() {
       window.dispatchEvent(new CustomEvent('tit-notifications-state', {
@@ -1996,143 +2024,81 @@
     }
 
     function markVisibleNotificationsRead() {
-      if (!currentUid || !feedLoaded || !userStatesLoaded || window.location.hash !== '#notifications' || readUpdatePending) return;
-      const patch = {};
+      if (!feedLoaded || !userStatesLoaded || window.location.hash !== '#notifications') return;
+      let changed = false;
       for (const [id, notification] of Object.entries(notifications)) {
         if (!notification || notification.active === false ||
             (userStates[id] && (userStates[id].dismissed === true || userStates[id].read === true))) continue;
-        patch[`${id}/read`] = true;
-        patch[`${id}/readAt`] = serverTimestamp();
+        userStates[id] = { ...(userStates[id] || {}), read: true, readAt: Date.now() };
+        changed = true;
       }
-      if (!Object.keys(patch).length) return;
-      readUpdatePending = true;
-      update(ref(database, `advance/notificationUsers/${currentUid}`), patch).then(() => {
-        for (const id of Object.keys(patch).filter((key) => key.endsWith('/read'))) {
-          const notificationId = id.slice(0, -5);
-          userStates[notificationId] = {
-            ...(userStates[notificationId] || {}),
-            read: true,
-            readAt: Date.now()
-          };
-        }
-        userError = '';
-        publishState();
-      }).catch((error) => {
-        console.error('Unable to mark notifications as read.', error);
-        userError = 'Unable to update read status. Check Firebase access and try again.';
-        publishState();
-      }).finally(() => {
-        readUpdatePending = false;
-      });
-    }
-
-    function attachNotificationListeners(user) {
-      if (!user || user.uid === currentUid) return;
-      if (unsubscribeFeed) unsubscribeFeed();
-      if (unsubscribeUserStates) unsubscribeUserStates();
-      if (unsubscribeConnection) unsubscribeConnection();
-      currentUid = user.uid;
-      notifications = {};
-      userStates = {};
-      feedLoaded = false;
-      userStatesLoaded = false;
-      feedError = '';
-      userError = '';
-      connected = null;
+      if (!changed) return;
+      if (saveUserStates()) userError = '';
       publishState();
-
-      unsubscribeFeed = onValue(ref(database, 'advance/notifications'), (snapshot) => {
-        try {
-          notifications = recordsOrEmpty(snapshot.val(), 'notification');
-          feedLoaded = true;
-          feedError = '';
-          publishState();
-          markVisibleNotificationsRead();
-        } catch (error) {
-          reportListenerError('notifications', error);
-        }
-      }, (error) => reportListenerError('notifications', error));
-
-      unsubscribeUserStates = onValue(ref(database, `advance/notificationUsers/${user.uid}`), (snapshot) => {
-        try {
-          userStates = recordsOrEmpty(snapshot.val(), 'notification preference');
-          userStatesLoaded = true;
-          userError = '';
-          publishState();
-          markVisibleNotificationsRead();
-        } catch (error) {
-          reportListenerError('notification preferences', error);
-        }
-      }, (error) => reportListenerError('notification preferences', error));
-
-      unsubscribeConnection = onValue(ref(database, '.info/connected'), (snapshot) => {
-        connected = snapshot.val() === true;
-        publishState();
-      }, (error) => {
-        console.error('Unable to read Firebase connection status.', error);
-      });
     }
+
+    unsubscribeFeed = onValue(ref(database, 'advance/notifications'), (snapshot) => {
+      try {
+        notifications = recordsOrEmpty(snapshot.val(), 'notification');
+        feedLoaded = true;
+        feedError = '';
+        publishState();
+        markVisibleNotificationsRead();
+      } catch (error) {
+        reportListenerError('notifications', error);
+      }
+    }, (error) => reportListenerError('notifications', error));
+
+    unsubscribeConnection = onValue(ref(database, '.info/connected'), (snapshot) => {
+      connected = snapshot.val() === true;
+      publishState();
+    }, (error) => {
+      console.error('Unable to read Firebase connection status.', error);
+    });
+    publishState();
 
     window.addEventListener('tit-notifications-opened', markVisibleNotificationsRead);
-    window.addEventListener('tit-notification-dismiss-request', async (event) => {
+    window.addEventListener('tit-notification-dismiss-request', (event) => {
       const detail = event.detail || {};
       const ids = detail.all ? (detail.ids || []) : [detail.id].filter(Boolean);
       const all = detail.all === true;
-      if (!currentUid || !ids.length || ids.some((id) => dismissUpdatesPending.has(id))) return;
-      ids.forEach((id) => dismissUpdatesPending.add(id));
-      const patch = {};
-      ids.forEach((id) => {
-        patch[`${id}/dismissed`] = true;
-        patch[`${id}/dismissedAt`] = serverTimestamp();
-      });
-      try {
-        await update(ref(database, `advance/notificationUsers/${currentUid}`), patch);
-        ids.forEach((id) => {
-          userStates[id] = {
-            ...(userStates[id] || {}),
-            dismissed: true,
-            dismissedAt: Date.now()
-          };
-        });
-        userError = '';
-        publishState();
-        window.dispatchEvent(new CustomEvent('tit-notification-action-result', { detail: { ids, all } }));
-      } catch (error) {
-        console.error('Unable to dismiss notifications for this user.', error);
+      const validIds = ids.filter((id) => typeof id === 'string' &&
+        Object.prototype.hasOwnProperty.call(notifications, id));
+      if (!validIds.length) {
         window.dispatchEvent(new CustomEvent('tit-notification-action-result', {
-          detail: {
-            ids,
-            all,
-            error: 'Unable to dismiss notifications. Check your connection and try again.'
-          }
+          detail: { ids, all, error: 'This notification is no longer available.' }
         }));
-      } finally {
-        ids.forEach((id) => dismissUpdatesPending.delete(id));
+        return;
       }
-    });
-
-    setPersistence(auth, browserLocalPersistence).then(() => {
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          anonymousSignInPending = false;
-          attachNotificationListeners(user);
-          return;
-        }
-        if (anonymousSignInPending) return;
-        anonymousSignInPending = true;
-        signInAnonymously(auth).catch((error) => {
-          anonymousSignInPending = false;
-          console.error('Unable to establish a per-user notification identity.', error);
-          userError = error.code === 'auth/operation-not-allowed'
-            ? 'Notifications need Firebase Anonymous sign-in enabled.'
-            : 'Unable to establish your notification identity. Check your connection and Firebase setup.';
-          publishState();
-        });
+      const previous = {};
+      const dismissedAt = Date.now();
+      validIds.forEach((id) => {
+        previous[id] = userStates[id];
+        userStates[id] = {
+          ...(userStates[id] || {}),
+          dismissed: true,
+          dismissedAt: dismissedAt,
+          read: true,
+          readAt: userStates[id] && userStates[id].readAt || dismissedAt
+        };
       });
-    }).catch((error) => {
-      console.error('Unable to initialize notification authentication.', error);
-      userError = 'Unable to initialize notification access. Check Firebase Authentication configuration.';
+      const saved = saveUserStates();
+      if (!saved) {
+        validIds.forEach((id) => {
+          if (previous[id]) userStates[id] = previous[id];
+          else delete userStates[id];
+        });
+      } else {
+        userError = '';
+      }
       publishState();
+      window.dispatchEvent(new CustomEvent('tit-notification-action-result', {
+        detail: {
+          ids: validIds,
+          all,
+          error: saved ? '' : 'Unable to dismiss notifications. Check local storage availability.'
+        }
+      }));
     });
   </script>
 </body>
