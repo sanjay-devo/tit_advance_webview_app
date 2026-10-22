@@ -304,23 +304,6 @@
     .course-detail[hidden] {
       display: none;
     }
-    .course-detail-back {
-      min-height: 44px;
-      margin-bottom: 16px;
-      padding: 0 16px;
-      border: 1px solid #E4E5EA;
-      border-radius: 999px;
-      background: #FFFFFF;
-      color: #171B2B;
-      font: inherit;
-      cursor: pointer;
-    }
-    .course-detail-title {
-      margin: 0 0 18px;
-      color: #171B2B;
-      font-size: clamp(20px, 5vw, 26px);
-      font-weight: 600;
-    }
     #pdf-viewer-close {
       position: fixed;
       z-index: 1;
@@ -670,8 +653,6 @@
       <section class="course-grid" id="courseGrid" aria-label="Courses"></section>
       <p class="course-empty" id="emptyState" role="status" hidden>No courses found.</p>
       <section id="courseDetail" class="course-detail" hidden aria-live="polite">
-        <button id="courseDetailBack" class="course-detail-back" type="button">← All courses</button>
-        <h2 id="selectedCourseTitle" class="course-detail-title"></h2>
         <section class="course-grid" id="subcategoryList" aria-label="Subcategories"></section>
         <p id="subcategoryEmptyState" class="course-empty" role="status" hidden>No subcategories are available for this course yet.</p>
       </section>
@@ -922,6 +903,7 @@
 
     const activeNavClass = 'w-full max-w-[102px] py-2 px-2 rounded-full flex flex-col items-center justify-center text-app-orange bg-app-orangeLight transition-all duration-200 active:scale-95';
     const inactiveNavClass = 'w-full max-w-[102px] py-2 px-2 rounded-full flex flex-col items-center justify-center text-app-secondary hover:text-app-primary hover:bg-app-orangeLight/35 transition-all duration-200 active:scale-95';
+    let lastAppHistoryState = null;
 
     function setTabState(button, isActive) {
       if (!button) return;
@@ -940,7 +922,7 @@
       setTabState(navSettings, activeTab === 'settings');
     }
 
-    function switchView(viewName, pushState = true) {
+    function renderView(viewName) {
       homeScreen.hidden = (viewName !== 'home');
       courseScreen.hidden = (viewName !== 'courses');
       if (communityScreen) communityScreen.hidden = (viewName !== 'community');
@@ -962,13 +944,21 @@
       }
 
       window.scrollTo(0, 0);
+    }
 
+    function switchView(viewName, pushState = true) {
+      selectedCourseKey = '';
+      renderStudentCourses();
+      renderView(viewName);
+      const state = { appScreen: true, screen: viewName, courseKey: '', layer: 'screen', root: !pushState };
+      const hash = viewName === 'home' ? '' : `#${viewName}`;
+      const url = hash || window.location.pathname;
       if (pushState) {
-        const hash = (viewName === 'home') ? '' : '#' + viewName;
-        if (window.location.hash !== hash) {
-          window.history.pushState({ screen: viewName }, '', hash || window.location.pathname);
-        }
+        window.history.pushState(state, '', url);
+      } else {
+        window.history.replaceState(state, '', url);
       }
+      lastAppHistoryState = state;
     }
 
     function openCourses() {
@@ -976,11 +966,7 @@
     }
 
     function returnHome() {
-      if (window.location.hash) {
-        window.history.back();
-      } else {
-        switchView('home');
-      }
+      switchView('home', false);
     }
 
     function syncScreenWithLocation() {
@@ -993,6 +979,33 @@
         switchView('settings', false);
       } else {
         switchView('home', false);
+      }
+    }
+
+    function restoreAppHistoryState(state) {
+      if (!state || !state.appScreen) {
+        const fallback = lastAppHistoryState || {
+          appScreen: true,
+          screen: 'home',
+          courseKey: '',
+          layer: 'screen',
+          root: true
+        };
+        window.history.pushState(fallback, '', window.location.href);
+        return;
+      }
+
+      lastAppHistoryState = state;
+      selectedCourseKey = state.courseKey || '';
+      renderView(state.screen || 'home');
+      renderStudentCourses();
+      if (state.layer === 'viewer' && state.viewerUrl) {
+        pdfViewerFrame.src = state.viewerUrl;
+        pdfViewerFrame.title = state.viewerTitle || 'PDF document viewer';
+        pdfViewerModal.showModal();
+      } else {
+        if (pdfViewerModal.open) pdfViewerModal.close();
+        pdfViewerFrame.src = 'about:blank';
       }
     }
 
@@ -1065,14 +1078,17 @@
       const course = studentCourses[selectedCourseKey];
       if (!course) {
         selectedCourseKey = '';
+        document.getElementById('courseTitle').textContent = 'BT Courses';
+        document.getElementById('courseBack').setAttribute('aria-label', 'Go back to home');
         courseDetail.hidden = true;
         courseGrid.hidden = false;
         return;
       }
+      document.getElementById('courseBack').setAttribute('aria-label', 'Back to course list');
       courseDetail.hidden = false;
       courseGrid.hidden = true;
-      const courseHeading = document.getElementById('selectedCourseTitle');
-      courseHeading.textContent = `${course.code || selectedCourseKey.toUpperCase()}${course.title ? ` — ${course.title}` : ''}`;
+      document.getElementById('courseTitle').textContent =
+        `${course.code || selectedCourseKey.toUpperCase()}${course.title ? ` — ${course.title}` : ''}`;
       subcategoryList.replaceChildren();
       const subcategories = Object.entries(course.subcategories || {}).filter(([, item]) => item && typeof item === 'object');
       subcategories.sort(([, a], [, b]) => String(a.title || '').localeCompare(String(b.title || '')));
@@ -1097,8 +1113,19 @@
         const rawUrl = subcategory.url;
         const url = new URL(rawUrl);
         if (!['http:', 'https:'].includes(url.protocol)) throw new Error('Unsupported document URL.');
+        const state = {
+          appScreen: true,
+          screen: 'courses',
+          courseKey: selectedCourseKey,
+          layer: 'viewer',
+          viewerUrl: rawUrl,
+          viewerTitle: subcategory.title || 'PDF document viewer',
+          root: false
+        };
+        history.pushState(state, '', '#courses');
+        lastAppHistoryState = state;
         pdfViewerFrame.src = rawUrl;
-        pdfViewerFrame.title = subcategory.title || 'PDF document viewer';
+        pdfViewerFrame.title = state.viewerTitle;
         pdfViewerModal.showModal();
       } catch (error) {
         emptyState.textContent = 'This PDF / ICC Embed link is invalid. Please contact support.';
@@ -1201,7 +1228,25 @@
 
     // Back Buttons
     const courseBackBtn = document.getElementById('courseBack');
-    if (courseBackBtn) courseBackBtn.addEventListener('click', returnHome);
+    if (courseBackBtn) courseBackBtn.addEventListener('click', () => {
+      if (pdfViewerModal.open) {
+        closeCourseDocument();
+      } else if (selectedCourseKey) {
+        selectedCourseKey = '';
+        const state = {
+          appScreen: true,
+          screen: 'courses',
+          courseKey: '',
+          layer: 'screen',
+          root: Boolean(history.state && history.state.root)
+        };
+        history.replaceState(state, '', '#courses');
+        lastAppHistoryState = state;
+        renderStudentCourses();
+      } else {
+        returnHome();
+      }
+    });
 
     const communityBackBtn = document.getElementById('communityBack');
     if (communityBackBtn) communityBackBtn.addEventListener('click', returnHome);
@@ -1218,8 +1263,14 @@
       }
     });
 
-    window.addEventListener('popstate', syncScreenWithLocation);
-    window.addEventListener('hashchange', syncScreenWithLocation);
+    window.addEventListener('popstate', (event) => restoreAppHistoryState(event.state));
+    window.addEventListener('hashchange', () => {
+      if (history.state && history.state.appScreen) {
+        restoreAppHistoryState(history.state);
+      } else {
+        syncScreenWithLocation();
+      }
+    });
 
     const courseSearchForm = document.getElementById('courseSearchForm');
     if (courseSearchForm) {
@@ -1239,6 +1290,15 @@
       const courseCard = event.target.closest('[data-course-key]');
       if (courseCard) {
         selectedCourseKey = courseCard.dataset.courseKey;
+        const state = {
+          appScreen: true,
+          screen: 'courses',
+          courseKey: selectedCourseKey,
+          layer: 'course',
+          root: false
+        };
+        history.pushState(state, '', '#courses');
+        lastAppHistoryState = state;
         renderStudentCourses();
       }
     });
@@ -1251,19 +1311,26 @@
       if (subcategory) openCourseDocument(subcategory);
     });
 
-    document.getElementById('courseDetailBack').addEventListener('click', () => {
-      selectedCourseKey = '';
-      renderStudentCourses();
-    });
-
     function closeCourseDocument() {
+      if (history.state && history.state.appScreen && history.state.layer === 'viewer') {
+        const courseState = {
+          appScreen: true,
+          screen: 'courses',
+          courseKey: selectedCourseKey,
+          layer: 'course',
+          root: false
+        };
+        history.replaceState(courseState, '', '#courses');
+        lastAppHistoryState = courseState;
+      }
       if (pdfViewerModal.open) pdfViewerModal.close();
       pdfViewerFrame.src = 'about:blank';
     }
 
     document.getElementById('pdf-viewer-close').addEventListener('click', closeCourseDocument);
-    pdfViewerModal.addEventListener('cancel', () => {
-      pdfViewerFrame.src = 'about:blank';
+    pdfViewerModal.addEventListener('cancel', (event) => {
+      event.preventDefault();
+      closeCourseDocument();
     });
 
     window.addEventListener('message', (event) => {
